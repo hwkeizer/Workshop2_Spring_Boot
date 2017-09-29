@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Customers</title> 
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+    <body>
+        <div class="listTitle">
+        <h1 class="center"> Klantoverzicht</h1>
+        
+        <table id="customers" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Achternaam</th>
+                    <th>Voornaam</th>
+                    <th>Accountnaam</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="customer:${customerList}">
+                    <td th:text="${customer.lastName}"></td>
+                    <td th:text="${customer.firstName + ' ' + customer.lastNamePrefix}"></td>
+                    <td th:text="${customer.account.username}"></td>
+                </tr>
+            </tbody>            
+        </table>
+      </div>
+    </body>
+</html>
