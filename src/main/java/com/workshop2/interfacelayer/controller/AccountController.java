@@ -10,6 +10,7 @@ import com.workshop2.domain.AccountType;
 import com.workshop2.interfacelayer.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +44,13 @@ public class AccountController {
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Account> getAllAccounts() {
         return accountRepository.findAll();
+    }
+    
+        @GetMapping
+    public String Accounts(Model model) {
+        
+        model.addAttribute("accountList", accountRepository.findAll());
+        return "accounts";
     }
     
     // Tijdelijke methode voor het maken van een nieuw account, moet nog uitgewerkt worden!

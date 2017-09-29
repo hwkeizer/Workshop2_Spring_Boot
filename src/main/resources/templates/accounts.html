@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Accounts</title> 
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+    <body>
+        <div class="listTitle">
+        <h1 class="center">Accountoverzicht</h1>
+        
+        <table id="accounts" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Accountnaam</th>
+                    <th>Wachtwoord (hashed)</th>
+                    <th>Account type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="account:${accountList}">
+                    <td th:text="${account.username}"></td>
+                    <td th:text="${account.password}"></td>
+                    <td th:text="${account.accountType}"></td>
+                </tr>
+            </tbody>            
+        </table>
+      </div>
+    </body>
+</html>
