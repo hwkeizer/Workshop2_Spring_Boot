@@ -6,6 +6,8 @@
 package com.workshop2.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -38,6 +41,9 @@ public class Customer implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
+    @OneToMany
+    @JoinColumn(name = "CUSTOMER_ID")
+    private final List<Order> orderList = new ArrayList<>();
     
     public Customer() {}
 
@@ -88,6 +94,14 @@ public class Customer implements Serializable {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+    
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+    
+    public void addToOrderList(Order order) {
+        orderList.add(order);
     }
         
     @Override
