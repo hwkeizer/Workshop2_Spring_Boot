@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Addresses</title> 
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div class="listTitle">
+            <h1 class="center"> Addressoverzicht</h1>
+
+            <table id="addresses" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>StreetName</th>
+                        <th>Number</th>
+                        <th>Addition</th>
+                        <th>PostalCode</th>
+                        <th>City</th>
+                        <th>KlantName</th>
+                        <th>AddressType</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="address:${addressList}">
+                        <td th:text="${address.streetName}"></td>
+                        <td th:text="${address.number}"></td>
+                        <td th:text="${address.addition}"></td>
+                        <td th:text="${address.postalCode}"></td>
+                        <td th:text="${address.city}"></td>
+                        <td th:text="${address.addressType}"></td>
+                        <td th:text="${address.customer.firstName + ' ' + address.customer.lastNamePrefix}"></td>
+                    </tr>
+                </tbody>            
+            </table>
+        </div>
+    </body>
+</html>
+

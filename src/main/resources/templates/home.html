@@ -1,24 +1,26 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Applikaasie</title>
-    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
-  </head>
-  <body>
-    <h1 class="center" th:text="#{hello.welcome}">Welcome to Applikaasie</h1>
-    <br/>
-    <div id="content">  
-      <br/>        
-        <div class="row">
-            <div class="col-md-12">
-              <img class="homepage-img" src="../static/resources/images/kaas.jpg" th:src="@{/resources/images/kaas.jpg}"/>
-            </div>
-        </div>
+    <head>
+        <title>Applikaasie</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <h1 class="center" th:text="#{hello.welcome}">Welcome to Applikaasie</h1>
         <br/>
-        <a class="button center" th:href="@{/customers}">Klantoverzicht</a>
-        <a class="button center" th:href="@{/accounts}">Accountoverzicht</a>
-    </div>
-  </body>
+        <div id="content">  
+            <br/>        
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="homepage-img" src="../static/resources/images/kaas.jpg" th:src="@{/resources/images/kaas.jpg}"/>
+                </div>
+            </div>
+            <br/>
+            <a class="button center" th:href="@{/customers}">Klantoverzicht</a>
+            <a class="button center" th:href="@{/accounts}">Accountoverzicht</a>
+            <a class="button center" th:href="@{/products}">Productoverzicht</a>
+            <a class="button center" th:href="@{/addresses">Addressoverzicht</a>
+        </div>
+    </body>
 </html>
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Products</title> 
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+    <body>
+        <div class="listTitle">
+        <h1 class="center">Productoverzicht</h1>
+        
+        <table id="products" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ProductName</th>
+                    <th>ProductPrice</th>
+                    <th>Nr.Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product:${productList}">
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${account.price}"></td>
+                    <td th:text="${account.stock}"></td>
+                </tr>
+            </tbody>            
+        </table>
+      </div>
+    </body>
+</html>
