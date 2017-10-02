@@ -8,13 +8,20 @@ package com.workshop2.interfacelayer.controller;
 import com.workshop2.domain.Account;
 import com.workshop2.domain.AccountType;
 import com.workshop2.interfacelayer.repository.AccountRepository;
+import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -23,28 +30,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(path="/accounts")
 public class AccountController {
+    private static final Logger log = LoggerFactory.getLogger(AccountController.class);
     
     @Autowired
     private AccountRepository accountRepository;
     
+//    @GetMapping(path="/add")
+//    public @ResponseBody String addNewAccount(
+//            @RequestParam String username,
+//            @RequestParam String password,
+//            @RequestParam AccountType accountType) {
+//        
+//        Account account = new Account();
+//        account.setUsername(username);
+//        account.setPassword(PasswordHash.generateHash(password));
+//        account.setAccountType(accountType);
+//        accountRepository.save(account);
+//        return "Saved";                
+//    }
+    
     @GetMapping(path="/add")
-    public @ResponseBody String addNewAccount(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam AccountType accountType) {
-        
-        Account account = new Account();
-        account.setUsername(username);
-        account.setPassword(password);
-        account.setAccountType(accountType);
-        accountRepository.save(account);
-        return "Saved";                
+    public String showRegistrationForm(Model model) {
+        model.addAttribute(new Account());
+        return "addAccountForm";
     }
     
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    @PostMapping(path="add")
+    public String addAccount(@Valid Account account, RedirectAttributes model, Errors errors) {
+        System.out.println("ERRORS: " + errors);
+        if (errors.hasErrors()) {
+            return "registerForm";
+        }
+        log.debug("NO ERRORS DETECTED, GOING TO SAVE...");
+        accountRepository.save(account);
+        return("redirect:/accounts");
     }
+//    @GetMapping(path="/all")
+//    public @ResponseBody Iterable<Account> getAllAccounts() {
+//        return accountRepository.findAll();
+//    }
     
         @GetMapping
     public String Accounts(Model model) {
@@ -52,12 +76,12 @@ public class AccountController {
         model.addAttribute("accountList", accountRepository.findAll());
         return "accounts";
     }
-    
+            
     // Tijdelijke methode voor het maken van een nieuw account, moet nog uitgewerkt worden!
     public Account createAccountForNewCustomer(String firstName, String lastName) {
         Account account = new Account();
         account.setUsername(lastName);
-        account.setPassword("welkom"); //AANPASSEN!
+        account.setPassword(PasswordHash.generateHash("welkom")); //AANPASSEN!
         account.setAccountType(AccountType.KLANT);
         return accountRepository.save(account); // Checken of het id klopt in het teruggegeven account!
     }

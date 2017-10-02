@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -28,8 +30,12 @@ public class Account implements Serializable {
     @Column(name = "ID")
     private Long id;
     @Column(name = "USERNAME")
+    @NotNull
+    @Size(min=3, max=16)
     private String username;
     @Column(name = "PASSWORD")
+    @NotNull
+    @Size(min=5)
     private String password;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ACCOUNT_TYPE")
