@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Orders</title> 
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+    <body>
+        <div class="listTitle">
+        <h1 class="center"> Bestellingenoverzicht</h1>
+        
+        <table id="customers" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Totaalprijs</th>
+                    <th>Datum</th>
+                    <th>Bestelstatus</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order:${orderList}">
+                    <td th:text="${order.totalPrice}"></td>
+                    <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                </tr>
+            </tbody>            
+        </table>
+      </div>
+    </body>
+</html>

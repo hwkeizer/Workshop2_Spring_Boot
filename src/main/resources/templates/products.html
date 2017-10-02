@@ -26,8 +26,8 @@ and open the template in the editor.
             <tbody>
                 <tr th:each="product:${productList}">
                     <td th:text="${product.name}"></td>
-                    <td th:text="${account.price}"></td>
-                    <td th:text="${account.stock}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.stock}"></td>
                 </tr>
             </tbody>            
         </table>

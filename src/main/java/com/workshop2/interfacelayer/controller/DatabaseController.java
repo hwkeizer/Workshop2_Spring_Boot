@@ -5,20 +5,26 @@
  */
 package com.workshop2.interfacelayer.controller;
 
+import com.workshop2.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  *
- * @author hwkei
+ * @author thoma
  */
 @Controller
-public class HomeController {    
-    @RequestMapping(value={"/", "/home"}, method=GET)
-    public String home() {
-        return "home";
-    }
+@RequestMapping(path="/refreshdatabase")
+public class DatabaseController {
+    @Autowired
+    private Database database;
     
+    @GetMapping
+    public String addNewCustomer() {
+        
+       database.initializeDatabase();
+       return "databaserefreshed";
+    }
 }
