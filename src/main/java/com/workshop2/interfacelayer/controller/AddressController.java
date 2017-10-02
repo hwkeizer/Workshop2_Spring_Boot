@@ -39,7 +39,8 @@ public class AddressController {
             @RequestParam String addition,
             @RequestParam String postalCode,
             @RequestParam String city,
-            @RequestParam Customer customer,
+            //@RequestParam Customer customer,
+            @RequestParam Long customerId,
             @RequestParam AddressType addressType) {
 
         Address address = new Address();
@@ -51,7 +52,8 @@ public class AddressController {
 //        if (customerRepository.findOne(customer.getId()) == null) {
 //            return null; // tegenwoordig geen address om te maken want er is geen zo customerId
 //        }
-        address.setCustomer(customerRepository.findOne(customer.getId()));
+        //address.setCustomer(customerRepository.findOne(customer.getId()));
+        address.setCustomer(customerRepository.findOne(customerId));
         address.setAddressType(addressType);
         addressRepository.save(address);
         return "Saved";
@@ -59,17 +61,17 @@ public class AddressController {
 
     @GetMapping(path = "/all")
     public @ResponseBody
-    Iterable<Address> getAllCustomers() {
+    Iterable<Address> getAllAddresses() {
         return addressRepository.findAll();
     }
 
     @GetMapping
-    public String customers(Model model) {
+    public String Addresses(Model model) {
         
-        Customer customer1 = customerRepository.findOne(1L);
+        // customer1 = customerRepository.findOne(1L);
         // Tijdelijke code om customertabel even te vullen:
-        addNewAddress("Postweg", 201, "h", "3781JK", "Aalst", customer1, AddressType.POSTADRES);
-        addNewAddress("Valkstraat", 9, "e", "2424DF", "Goorle", customer1, AddressType.BEZORGADRES);
+        addNewAddress("Postweg", 201, "h", "3781JK", "Aalst", 1l, AddressType.POSTADRES);
+        addNewAddress("Valkstraat", 9, "e", "2424DF", "Goorle", 2l, AddressType.BEZORGADRES);
         model.addAttribute("addressList", addressRepository.findAll());
         return "addresses";
     }

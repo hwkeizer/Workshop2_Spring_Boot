@@ -43,11 +43,11 @@ public class ProductController {
     }
     
      @GetMapping(path="/all")
-    public @ResponseBody Iterable<Product> getAllCustomers() {
+    public @ResponseBody Iterable<Product> getAllProducts() {
         return productRepository.findAll();
     }
     
-    @GetMapping("{")
+    @GetMapping
     public String products(Model model) {
         
         // Tijdelijke code om producttabel even te vullen:
