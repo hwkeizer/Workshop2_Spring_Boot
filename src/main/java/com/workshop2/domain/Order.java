@@ -72,11 +72,11 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDateTime(LocalDateTime date) {
         this.dateTime = date;
     }
 
@@ -99,11 +99,11 @@ public class Order {
     
     @Override
     public String toString() {
-        return String.format("%-5d%-10.2f%-15s%-20s", this.getId(), this.getTotalPrice(), this.getDate().toLocalDate().toString(), this.getOrderStatus().toString());
+        return String.format("%-5d%-10.2f%-15s%-20s", this.getId(), this.getTotalPrice(), this.getDateTime().toLocalDate().toString(), this.getOrderStatus().toString());
     }
 
     public String toStringNoId() {
-        return String.format("%-10.2f%-15s%-20s", this.getTotalPrice(), this.getDate().toLocalDate().toString(), this.getOrderStatus().toString());
+        return String.format("%-10.2f%-15s%-20s", this.getTotalPrice(), this.getDateTime().toLocalDate().toString(), this.getOrderStatus().toString());
     }
 
     @Override
