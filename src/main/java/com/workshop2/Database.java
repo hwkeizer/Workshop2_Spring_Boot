@@ -57,10 +57,10 @@ public class Database {
         // clear all current data
         addressRepository.deleteAll();
         System.out.println("ADDRESS deleted");
-        accountRepository.deleteAll();
-        System.out.println("ACCOUNT deleted");
         customerRepository.deleteAll();  
         System.out.println("CUSTOMER deleted");
+        accountRepository.deleteAll();
+        System.out.println("ACCOUNT deleted");
         orderRepository.deleteAll();   
         System.out.println("ORDER deleted");
         orderItemRepository.deleteAll();   

@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
  *
@@ -46,7 +44,7 @@ public class OrderController {
        order.setTotalPrice(totalPrice);
        order.setDateTime(dateTime);
        order.setOrderStatus(orderStatus);
-        System.out.println(order);
+       System.out.println(order);
        orderRepository.save(order);
        return "Saved";
     } 
