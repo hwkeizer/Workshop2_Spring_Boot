@@ -7,6 +7,7 @@ package com.workshop2.interfacelayer.controller;
 
 import com.workshop2.domain.Address;
 import com.workshop2.domain.Address.AddressType;
+import com.workshop2.domain.Customer;
 import com.workshop2.interfacelayer.repository.AddressRepository;
 import com.workshop2.interfacelayer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class AddressController {
 
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
     private CustomerRepository customerRepository;
 
     @GetMapping(path = "/add")
@@ -37,7 +39,7 @@ public class AddressController {
             @RequestParam String addition,
             @RequestParam String postalCode,
             @RequestParam String city,
-            @RequestParam long customerId,
+            @RequestParam Customer customer,
             @RequestParam AddressType addressType) {
 
         Address address = new Address();
@@ -46,10 +48,10 @@ public class AddressController {
         address.setAddition(addition);
         address.setPostalCode(postalCode);
         address.setCity(city);
-        if (customerRepository.findOne(customerId).equals(null)) {
-            return null; // tegenwoordig geen address om te maken want er is geen zo customerId
-        }
-        address.setCustomer(customerRepository.findOne(customerId));
+//        if (customerRepository.findOne(customer.getId()) == null) {
+//            return null; // tegenwoordig geen address om te maken want er is geen zo customerId
+//        }
+        address.setCustomer(customerRepository.findOne(customer.getId()));
         address.setAddressType(addressType);
         addressRepository.save(address);
         return "Saved";
@@ -63,10 +65,11 @@ public class AddressController {
 
     @GetMapping
     public String customers(Model model) {
-
+        
+        Customer customer1 = customerRepository.findOne(1L);
         // Tijdelijke code om customertabel even te vullen:
-        addNewAddress("Postweg", 201, "h", "3781JK", "Aalst", 1, AddressType.POSTADRES);
-        addNewAddress("Valkstraat", 9, "e", "2424DF", "Goorle", 2, AddressType.BEZORGADRES);
+        addNewAddress("Postweg", 201, "h", "3781JK", "Aalst", customer1, AddressType.POSTADRES);
+        addNewAddress("Valkstraat", 9, "e", "2424DF", "Goorle", customer1, AddressType.BEZORGADRES);
         model.addAttribute("addressList", addressRepository.findAll());
         return "addresses";
     }
