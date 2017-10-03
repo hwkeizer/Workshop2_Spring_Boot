@@ -12,6 +12,7 @@ import com.workshop2.interfacelayer.repository.OrderItemRepository;
 import com.workshop2.interfacelayer.repository.OrderRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,8 +58,38 @@ public class OrderController {
     
     @GetMapping
     public String orders(Model model) {
+
+        return "order_menu";
+    }
+    
+    @GetMapping(path="/all_orders")
+    public String showOrdersAll(Model model) {
         
         model.addAttribute("orderList", orderRepository.findAll());
-        return "orders";
+        return "order/orders_all";
+    }
+    
+    @GetMapping(path="/orderstatus_new")
+    public String showOrdersNew(Model model) {
+        List<Order> orderList = orderRepository.findByOrderStatus(NIEUW);
+
+        model.addAttribute("orderList", orderList);
+        return "order/orders_new";
+    }
+    
+    @GetMapping(path="/orderstatus_inprogress")
+    public String showOrdersInProgress(Model model) {
+        List<Order> orderList = orderRepository.findByOrderStatus(IN_BEHANDELING);
+
+        model.addAttribute("orderList", orderList);
+        return "order/orders_inprogress";
+    }
+    
+    @GetMapping(path="/orderstatus_finished")
+    public String showOrdersFinished(Model model) {
+        List<Order> orderList = orderRepository.findByOrderStatus(AFGEHANDELD);
+        
+        model.addAttribute("orderList", orderList);
+        return "order/orders_finished";
     }
 }

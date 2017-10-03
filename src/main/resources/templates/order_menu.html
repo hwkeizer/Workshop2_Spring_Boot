@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Applikaasie</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <h1 class="center">Menu bestellingen</h1>
+        <br/>
+        <div id="content">  
+            <br/>        
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="homepage-img" src="../static/resources/images/kaas.jpg" th:src="@{/resources/images/kaas.jpg}"/>
+                </div>
+            </div>
+            <br/>
+            <a class="button center" th:href="@{/orders/all_orders}">Alle bestellingen</a>
+            <a class="button center" th:href="@{/orders/orderstatus_new}">Bestelstatus: nieuw</a>
+            <a class="button center" th:href="@{/orders/orderstatus_inprogress}">Bestelstatus: in behandeling</a>
+            <a class="button center" th:href="@{/orders/orderstatus_finished}">Bestelstatus: afgehandeld</a>
+            <a class="button center" th:href="@{/}">Terug naar home</a>
+        </div>
+    </body>
+</html>
+
