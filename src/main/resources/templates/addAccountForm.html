@@ -10,14 +10,13 @@
       <h1 class="center"> Account toevoegen</h1>
   
       <form method="POST" th:action="@{/accounts/add}" th:object="${account}">
-        <div class="errors" th:if="${#fields.hasErrors('*')}">
-          <ul>
-            <li th:each="err : ${#fields.errors('*')}" 
-                th:text="${err}">Veld onjuist ingevuld</li>
-              <li th:each="err : ${#fields.errors('global')}" th:text="${err}" />
-          </ul>
-        </div>
         <div class="formfields">
+            <div class="errors" th:if="${#fields.hasErrors('*')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" 
+                        th:text="${err}">Veld onjuist ingevuld</li>
+                </ul>
+            </div>
             <label th:class="${#fields.hasErrors('username')}? 'error'">Account naam</label> 
                 <input type="text" th:field="*{username}"  
                      th:class="${#fields.hasErrors('username')}? 'error'" /><br/>

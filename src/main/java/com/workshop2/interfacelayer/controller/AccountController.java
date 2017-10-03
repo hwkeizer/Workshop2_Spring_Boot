@@ -62,9 +62,13 @@ public class AccountController {
     }
     
     @PostMapping(path="/add")
-    public String addAccount(@Valid Account account, RedirectAttributes model, Errors errors) {
+    public String addAccount(@Valid Account account, Errors errors, RedirectAttributes model) {
         if (errors.hasErrors()) {
-            return "registerForm";
+            // Opnieuw vullen van de model attributes helpt niet om listbox weer gevuld te krijgen
+            List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
+            model.addAttribute(new Account());        
+            model.addAttribute(accountTypeList);
+            return "addAccountForm";
         }
         account.setPassword(PasswordHash.generateHash(account.getPassword()));
         accountRepository.save(account);

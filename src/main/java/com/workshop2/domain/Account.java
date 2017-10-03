@@ -30,12 +30,12 @@ public class Account implements Serializable {
     @Column(name = "ID")
     private Long id;
     @Column(name = "USERNAME")
-    @NotNull
-    @Size(min=3, max=16)
+    @NotNull(message="Account naam mag niet leeg zijn")
+    @Size(min=3, max=16, message="Account naam moet minimaal 3 tot maximaal 16 tekens bevatten")
     private String username;
     @Column(name = "PASSWORD")
-    @NotNull
-    @Size(min=5)
+    @NotNull(message="Wachtwoord mag niet leeg zijn")
+    @Size(min=5, max=50, message="Wachtwoord moet minimaal 5 tot maximaal 50 tekens bevatten")
     private String password;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ACCOUNT_TYPE")
