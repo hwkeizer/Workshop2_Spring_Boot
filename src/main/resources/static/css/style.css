@@ -81,3 +81,7 @@ table, th, td {
     width: 150px;
     text-align: left;
 }
+
+.error, .errors {
+    color: red;
+}
