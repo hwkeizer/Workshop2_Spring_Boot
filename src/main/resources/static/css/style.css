@@ -60,3 +60,24 @@ table, th, td {
     margin-left: auto;
     margin-right: auto;
 }
+
+.formfields {
+    display: block;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.formfields input {
+    display: block;
+    display: inline-block;
+    float: left;
+}
+
+.formfields label {
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 150px;
+    text-align: left;
+}

@@ -7,28 +7,35 @@
   </head>
   <body>
     <div id="content">
-      <h1>Account toevoegen</h1>
+      <h1 class="center"> Account toevoegen</h1>
   
       <form method="POST" th:action="@{/accounts/add}" th:object="${account}">
         <div class="errors" th:if="${#fields.hasErrors('*')}">
           <ul>
             <li th:each="err : ${#fields.errors('*')}" 
-                th:text="${err}">Velden onjuist ingevuld</li>
+                th:text="${err}">Veld onjuist ingevuld</li>
+              <li th:each="err : ${#fields.errors('global')}" th:text="${err}" />
           </ul>
         </div>
-        <label th:class="${#fields.hasErrors('username')}? 'error'">Account naam</label>: 
-          <input type="text" th:field="*{username}"  
-                 th:class="${#fields.hasErrors('username')}? 'error'" /><br/>
-  
-        <label th:class="${#fields.hasErrors('password')}? 'error'">Wachtwoord</label>: 
-          <input type="password" th:field="*{password}"  
-                 th:class="${#fields.hasErrors('password')}? 'error'" /><br/> 
-  
-        <label th:class="${#fields.hasErrors('accountType')}? 'error'">Account type</label>: 
-          <input type="text" th:field="*{accountType}"
-                 th:class="${#fields.hasErrors('accountType')}? 'error'" /><br/>
-  
-        <input type="submit" value="Toevoegen" />
+        <div class="formfields">
+            <label th:class="${#fields.hasErrors('username')}? 'error'">Account naam</label> 
+                <input type="text" th:field="*{username}"  
+                     th:class="${#fields.hasErrors('username')}? 'error'" /><br/>
+            <br/>
+            <label  th:class="${#fields.hasErrors('password')}? 'error'">Wachtwoord</label> 
+                <input type="password" th:field="*{password}"  
+                     th:class="${#fields.hasErrors('password')}? 'error'" /><br/> 
+            <br/>
+                <label th:class="${#fields.hasErrors('accountType')}? 'error'">Account type</label>
+                <select th:field="*{accountType}">
+                    <option th:each="dropDownItem : ${accountTypeList}"
+                                     th:value="${dropDownItem}"
+                                     th:text="${dropDownItem}" />
+              </select>
+            <br/>
+            <br/>
+        </div>
+        <input class="button" type="submit" value="Toevoegen" />
       
       
       </form>

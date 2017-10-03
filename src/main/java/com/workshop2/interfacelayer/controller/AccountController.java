@@ -8,6 +8,9 @@ package com.workshop2.interfacelayer.controller;
 import com.workshop2.domain.Account;
 import com.workshop2.domain.AccountType;
 import com.workshop2.interfacelayer.repository.AccountRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,18 +53,20 @@ public class AccountController {
 //    }
     
     @GetMapping(path="/add")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute(new Account());
+    public String showaddAccountForm(Model model) {
+
+        List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
+        model.addAttribute(new Account());        
+        model.addAttribute(accountTypeList);
         return "addAccountForm";
     }
     
-    @PostMapping(path="add")
+    @PostMapping(path="/add")
     public String addAccount(@Valid Account account, RedirectAttributes model, Errors errors) {
-        System.out.println("ERRORS: " + errors);
         if (errors.hasErrors()) {
             return "registerForm";
         }
-        log.debug("NO ERRORS DETECTED, GOING TO SAVE...");
+        account.setPassword(PasswordHash.generateHash(account.getPassword()));
         accountRepository.save(account);
         return("redirect:/accounts");
     }
