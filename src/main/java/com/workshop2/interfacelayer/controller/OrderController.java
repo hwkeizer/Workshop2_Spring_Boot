@@ -12,6 +12,7 @@ import com.workshop2.interfacelayer.repository.OrderItemRepository;
 import com.workshop2.interfacelayer.repository.OrderRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,11 +57,6 @@ public class OrderController {
     
     @GetMapping
     public String orders(Model model) {
-        
-        // Tijdelijke code om customertabel even te vullen:
-        addNewOrder(new BigDecimal("10.00"), LocalDateTime.now(), NIEUW);
-        addNewOrder(new BigDecimal("20.00"), LocalDateTime.now(), IN_BEHANDELING);
-        addNewOrder(new BigDecimal("40.00"), LocalDateTime.now(), AFGEHANDELD);
         
         model.addAttribute("orderList", orderRepository.findAll());
         return "orders";

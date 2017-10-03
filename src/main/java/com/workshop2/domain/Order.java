@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,6 +47,9 @@ public class Order {
     @OneToMany
     @JoinColumn(name = "ORDER_ID")
     private final List<OrderItem> orderItemList = new ArrayList<>();
+    //@JoinColumn(name = "CUSTOMER_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
 
     // Default no-arg constructor will leave all member fields on their default
     // except for the id field which will be invalidated to a negative value
@@ -96,10 +100,18 @@ public class Order {
     public void addToOrderItemList(OrderItem orderItem) {
         orderItemList.add(orderItem);
     }
-    
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+        
     @Override
     public String toString() {
-        return String.format("%-5d%-10.2f%-15s%-20s", this.getId(), this.getTotalPrice(), this.getDateTime().toLocalDate().toString(), this.getOrderStatus().toString());
+        return String.format("%-5d%-30s%-10.2f%-15s%-20s", this.getId(), this.getCustomer().getLastName(), this.getTotalPrice(), this.getDateTime().toLocalDate().toString(), this.getOrderStatus().toString());
     }
 
     public String toStringNoId() {

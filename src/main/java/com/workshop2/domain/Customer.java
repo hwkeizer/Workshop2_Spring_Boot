@@ -41,9 +41,9 @@ public class Customer implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
-    @OneToMany
-    @JoinColumn(name = "CUSTOMER_ID")
-    private final List<Order> orderList = new ArrayList<>();
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    //@JoinColumn(name = "CUSTOMER_ID")
+    private List<Order> orderList = new ArrayList<>();
     
     public Customer() {}
 
