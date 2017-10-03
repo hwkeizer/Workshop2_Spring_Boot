@@ -35,7 +35,7 @@ public class Account implements Serializable {
     private String username;
     @Column(name = "PASSWORD")
     @NotNull(message="Wachtwoord mag niet leeg zijn")
-    @Size(min=5, max=50, message="Wachtwoord moet minimaal 5 tot maximaal 50 tekens bevatten")
+    @Size(min=5, max=250, message="Wachtwoord moet minimaal 5 tot maximaal 250 tekens bevatten")
     private String password;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ACCOUNT_TYPE")
