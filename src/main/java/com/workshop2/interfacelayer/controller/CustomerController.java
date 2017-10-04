@@ -51,22 +51,8 @@ public class CustomerController {
     @GetMapping
     public String customers(Model model) {
         
-        // Tijdelijke code om customertabel even te vullen:
-        addNewCustomer("Piet", "Pietersen", null);
-        addNewCustomer("Klaas", "Klaassen", null);
-        addNewCustomer("Fred", "Wal", "van der");
-        
         model.addAttribute("customerList", customerRepository.findAll());
         return "customers";
     }
     
-    // Methode om rechtstreeks een customer aan te maken. Handig/Nodig....????
-//    public void createCustomer(String firstName, String lastName, String lastNamePrefix) {
-//        Customer customer = new Customer();
-//        customer.setFirstName(firstName);
-//        customer.setLastName(lastName);
-//        customer.setLastNamePrefix(lastNamePrefix);
-//        customer.setAccount(accountController.createAccountForNewCustomer(firstName, lastName));
-//        customerRepository.save(customer);
-//    }
 }

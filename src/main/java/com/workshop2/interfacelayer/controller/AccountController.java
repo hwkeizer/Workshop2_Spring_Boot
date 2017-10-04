@@ -50,11 +50,10 @@ public class AccountController {
     }
     
     @PostMapping(path="/add")
-    public String addAccount(@Valid Account account, Errors errors, RedirectAttributes model) {
+    public String addAccount(@Valid Account account, Errors errors, Model model) {
         if (errors.hasErrors()) {
             // Opnieuw vullen van de model attributes helpt niet om listbox weer gevuld te krijgen
             List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
-            model.addAttribute(new Account());        
             model.addAttribute(accountTypeList);
             return "addAccountForm";
         }
