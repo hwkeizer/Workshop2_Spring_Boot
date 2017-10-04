@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Orders</title> 
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+    <body>
+        <div class="listTitle">
+        <h1 class="center"> Bestelling</h1>
+        
+        <table id="orders" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Naam Klant</th>
+                    <th>Totaalprijs</th>
+                    <th>Datum</th>
+                    <th>Bestelstatus</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></td>
+                    <td th:text="${order.totalPrice}"></td>
+                    <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                </tr>
+            </tbody>            
+        </table>
+        
+        
+        <h2 class="center">Bestelde producten</h2>
+        
+        <table id="orderItems" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Productnaam</th>
+                    <th>Aantal</th>
+                    <th>Subtotaal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="orderItem:${order.orderItemList}">
+                    <td th:text="${orderItem.product.name}"></td>
+                    <td th:text="${orderItem.amount}"></td>
+                    <td th:text="${orderItem.subTotal}"></td>
+                </tr>
+            </tbody>            
+        </table>
+      </div>
+    </body>
+</html>

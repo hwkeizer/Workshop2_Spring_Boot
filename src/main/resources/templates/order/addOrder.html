@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Applikaasie</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <h1 class="center">Bestelling plaatsen</h1>
+        <br/>
+        <h2 class="center">Bestelde producten</h2>
+        
+        <table id="orderItems" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Productnaam</th>
+                    <th>Aantal</th>
+                    <th>Subtotaal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="orderItem:${order.orderItemList}">
+                    <td th:text="${orderItem.product.name}"></td>
+                    <td th:text="${orderItem.amount}"></td>
+                    <td th:text="${orderItem.subTotal}"></td>
+                </tr>
+            </tbody>            
+        </table>
+
+        <h2 class="center" th:text="${'Subtotaal: ' + order.totalPrice}"></h2>
+        
+        
+        <div id="content">  
+            <br/>        
+
+            <a class="button center" th:href="@{/orders/addorderitem}">Bestelregel toevoegen</a>
+            <a class="button center" th:href="@{/orders/saveorder}">Bestelling opslaan</a>
+            <a class="button center" th:href="@{/}">Terug naar home</a>
+        </div>
+    </body>
+</html>
+
