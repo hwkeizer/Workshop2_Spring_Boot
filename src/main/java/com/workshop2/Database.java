@@ -21,6 +21,7 @@ import com.workshop2.domain.OrderItem;
 import static com.workshop2.domain.OrderStatus.*;
 import com.workshop2.domain.Product;
 import com.workshop2.PasswordHash;
+import com.workshop2.domain.Address.AddressType;
 import com.workshop2.interfacelayer.controller.AccountController;
 import com.workshop2.interfacelayer.repository.AccountRepository;
 import com.workshop2.interfacelayer.repository.AddressRepository;

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1>Voeg u alstublieft de nieuwe product informatie toe</h1>
+            <form method="POST" th:action="@{/products/add}" th:object="${product}"  >
+               <div class="errors" th:if="${#fields.hasErrors('*')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('*')}" 
+                            th:text="${err}">Het price is onjuiste gevuld</li>
+                    </ul>
+                </div>
+                <label th:class="${#fields.hasErrors('name')}? 'error'">Productnaam</label>: 
+                <input type="text" th:field="*{name}" required="required"
+                       th:class="${#fields.hasErrors('name')}? 'error'"/><br/><br/>
+
+                <label th:class="${#fields.hasErrors('price')}? 'error'">ProductPrice</label>: 
+                <input type="text" th:field="*{price}" pattern="\d{2}.?\d{2}"
+                       th:class="${#fields.hasErrors('price')}? 'error'" /><br/><br/>
+
+                <label th:class="${#fields.hasErrors('stock')}? 'error'">Nr.Stock</label>: 
+                <input type="number" th:field="*{stock}" required="required"
+                       th:class="${#fields.hasErrors('stock')}? 'error'" /><br/><br/>
+
+                <input type="submit" value="Toevoegen" />
+
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new address</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1>Voeg u alstublieft het nieuwe address informatie toe</h1>
+            <form method="POST" th:action="@{/addresses/add}" th:object="${address}"  >
+
+                <label>StreetName</label>: 
+                <input type="text" th:field="*{streetName}" required="required"
+                       /><br/><br/>
+
+                <label>Number</label>: 
+                <input type="number" th:field="*{number}" required="required" /><br/><br/>
+
+                <label>Addition</label>: 
+                <input type="text" th:field="*{addition}"  /><br/><br/>
+
+                <label>PostalCode</label>: 
+                <input type="text" th:field="*{postalCode}" required="required" 
+                       pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}"/><br/><br/>
+
+                <label>City</label>: 
+                <input type="text" th:field="*{city}" required="required" 
+                      /><br/><br/>
+
+                <label >CustomerId</label>:
+               <input type="number"  required="required" 
+                      />
+                   
+                <br/><br/>
+
+                <label>AddressType</label>
+                <select th:field="*{addressType}">
+                    <option>POSTADRES</option> 
+                    <option>FACTUURADRES</option>
+                    <option>BEZORGADRES</option>                           
+
+                </select> <br/><br/>
+                <input type="submit" value="Toevoegen" />
+
+            </form>
+        </div>
+    </body>
+</html>
+

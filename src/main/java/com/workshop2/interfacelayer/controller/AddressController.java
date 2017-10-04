@@ -7,16 +7,24 @@ package com.workshop2.interfacelayer.controller;
 
 import com.workshop2.domain.Address;
 import com.workshop2.domain.Address.AddressType;
+import static com.workshop2.domain.Address.AddressType.*;
 import com.workshop2.domain.Customer;
 import com.workshop2.interfacelayer.repository.AddressRepository;
 import com.workshop2.interfacelayer.repository.CustomerRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -32,6 +40,33 @@ public class AddressController {
     private CustomerRepository customerRepository;
 
     @GetMapping(path = "/add")
+    public String addAddress(Model model) {
+        
+                
+        model.addAttribute(new Address());
+        return "addNewAddress";
+    }
+
+    @GetMapping
+    public String Addresses(Model model) {
+        model.addAttribute("addressList", addressRepository.findAll());
+        return "addresses";
+    }
+
+    @PostMapping(path = "/add")
+    public String addNewAccount(@Valid Address address, Errors errors, RedirectAttributes model) {
+        if (errors.hasErrors()) {
+            model.addAttribute(new Address());
+            return "addNewAddress";
+        }
+
+        addressRepository.save(address);
+        model.addAttribute("addressList", addressRepository.findAll());
+        return ("redirect:/addresses");
+    }
+    
+    
+    /*@GetMapping(path = "/add")
     public @ResponseBody
     String addNewAddress(
             @RequestParam String streetName,
@@ -49,10 +84,6 @@ public class AddressController {
         address.setAddition(addition);
         address.setPostalCode(postalCode);
         address.setCity(city);
-//        if (customerRepository.findOne(customer.getId()) == null) {
-//            return null; // tegenwoordig geen address om te maken want er is geen zo customerId
-//        }
-        //address.setCustomer(customerRepository.findOne(customer.getId()));
         address.setCustomer(customerRepository.findOne(customerId));
         address.setAddressType(addressType);
         addressRepository.save(address);
@@ -63,17 +94,6 @@ public class AddressController {
     public @ResponseBody
     Iterable<Address> getAllAddresses() {
         return addressRepository.findAll();
-    }
-
-    @GetMapping
-    public String Addresses(Model model) {
-        
-        // customer1 = customerRepository.findOne(1L);
-        // Tijdelijke code om customertabel even te vullen:
-        addNewAddress("Postweg", 201, "h", "3781JK", "Aalst", 1l, AddressType.POSTADRES);
-        addNewAddress("Valkstraat", 9, "e", "2424DF", "Goorle", 2l, AddressType.BEZORGADRES);
-        model.addAttribute("addressList", addressRepository.findAll());
-        return "addresses";
-    }
+    }*/
 
 }

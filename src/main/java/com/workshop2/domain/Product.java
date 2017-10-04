@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -27,10 +28,13 @@ public class Product {
     @Column(name = "ID")
     private Long id;
     @Column(name = "NAME")
+    @NotNull(message="* verplicht moet gevuld worden")
     private String name;
     @Column(name = "PRICE")
+    @NotNull(message="* verplicht moet gevuld worden")
     private BigDecimal price;
     @Column(name = "STOCK")
+    @NotNull(message="* verplicht moet gevuld worden")
     private int stock;
 
     // Default no-arg constructor will leave all member fields on their default
