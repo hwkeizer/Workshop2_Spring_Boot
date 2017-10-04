@@ -47,13 +47,6 @@ public class Customer implements Serializable {
     
     public Customer() {}
 
-//    public Customer(String firstName, String lastName, String lastNamePrefix, Account account) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.lastNamePrefix = lastNamePrefix;
-//        this.account = account;
-//    }
-
     public Long getId() {
         return id;
     }

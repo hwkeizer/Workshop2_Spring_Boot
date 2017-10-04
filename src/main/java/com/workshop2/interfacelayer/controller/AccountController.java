@@ -11,22 +11,18 @@ import com.workshop2.interfacelayer.repository.AccountRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -50,16 +46,19 @@ public class AccountController {
     }
     
     @PostMapping(path="/add")
-    public String addAccount(@Valid Account account, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            // Opnieuw vullen van de model attributes helpt niet om listbox weer gevuld te krijgen
+    public String addAccount(@Valid Account account, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
             model.addAttribute(accountTypeList);
             return "addAccountForm";
         }
         account.setPassword(PasswordHash.generateHash(account.getPassword()));
-        accountRepository.save(account);
-        return("redirect:/accounts");
+        try {
+            accountRepository.save(account);
+            return("redirect:/accounts");
+        } catch(DataIntegrityViolationException e) {
+            return("error/duplicate_account");
+        }
     }
 
         
