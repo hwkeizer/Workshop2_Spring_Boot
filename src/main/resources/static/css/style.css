@@ -85,3 +85,7 @@ table, th, td {
 .error, .errors {
     color: red;
 }
+
+.red {
+    background-color: lightcoral;
+}

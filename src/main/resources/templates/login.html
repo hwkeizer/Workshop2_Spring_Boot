@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Applikaasie</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+  <body onload='document.f.username.focus()'>
+
+  <div id="content"> 
+      <h1 class="center">Welkom bij Applikaasie 2.0!</h1>
+  <br/>        
+    <div class="row">
+        <div class="col-md-12">
+            <img class="homepage-img" src="../static/images/kaas.jpg" th:src="@{/images/kaas.jpg}"/>
+        </div>
+    </div>
+  <br/>
+  <form name='f' th:action='@{/login}' method='POST'>
+    <div class="formfields">
+       <table>
+        <tr><td>Gebruiker:</td><td>
+            <input type='text' name='username' value='' /></td></tr>
+        <tr><td>Wachtwoord:</td>
+            <td><input type='password' name='password'/></td></tr>
+        <tr><td colspan='2'>
+            <input name="submit" type="submit" value="Login"/></td></tr>
+       </table>
+    </div>
+  </form>
+  </div>
+  </body>
+</html>

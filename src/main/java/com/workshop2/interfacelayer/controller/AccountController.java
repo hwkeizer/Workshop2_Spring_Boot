@@ -11,10 +11,12 @@ import com.workshop2.interfacelayer.repository.AccountRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -37,21 +39,7 @@ public class AccountController {
     
     @Autowired
     private AccountRepository accountRepository;
-    
-//    @GetMapping(path="/add")
-//    public @ResponseBody String addNewAccount(
-//            @RequestParam String username,
-//            @RequestParam String password,
-//            @RequestParam AccountType accountType) {
-//        
-//        Account account = new Account();
-//        account.setUsername(username);
-//        account.setPassword(PasswordHash.generateHash(password));
-//        account.setAccountType(accountType);
-//        accountRepository.save(account);
-//        return "Saved";                
-//    }
-    
+        
     @GetMapping(path="/add")
     public String showaddAccountForm(Model model) {
 
@@ -74,18 +62,38 @@ public class AccountController {
         accountRepository.save(account);
         return("redirect:/accounts");
     }
-//    @GetMapping(path="/all")
-//    public @ResponseBody Iterable<Account> getAllAccounts() {
-//        return accountRepository.findAll();
-//    }
-    
-        @GetMapping
+
+        
+    @GetMapping
     public String Accounts(Model model) {
         
         model.addAttribute("accountList", accountRepository.findAll());
         return "accounts";
     }
-            
+      
+    public boolean validateAccount(String username, String password) {
+        Account account = new Account();
+        account.setUsername(username);
+        List<Account> resultList = accountRepository.findAll(Example.of(account));
+        if (resultList != null && resultList.size() == 1) {
+            return PasswordHash.validatePassword(password, resultList.get(0).getPassword());
+        } else {
+            log.debug("Validation user {} failed", username);
+            return false; // Account not found
+        }
+    }
+    
+    public AccountType getUserRole(String username) {
+        Account account = new Account();
+        account.setUsername(username);
+        List<Account> resultList = accountRepository.findAll(Example.of(account));
+        if (resultList != null && resultList.size() == 1) {
+            return resultList.get(0).getAccountType();
+        } else {
+            return null;
+        }
+    }
+    
     // Tijdelijke methode voor het maken van een nieuw account, moet nog uitgewerkt worden!
     public Account createAccountForNewCustomer(String firstName, String lastName) {
         Account account = new Account();
