@@ -21,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -37,6 +38,7 @@ public class OrderItem {
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
     @Column(name = "AMOUNT")
+    @NotNull(message="Voer het aantal van dit product in dat u wilt bestellen")
     private int amount;
     @Column(name = "SUB_TOTAL")
     private BigDecimal subTotal;
@@ -84,6 +86,10 @@ public class OrderItem {
     @Override
     public String toString(){
         return "ID: " + this.id.toString() + "   amount: " + this.amount + "    subTotal: " + this.subTotal.toString();
+    }
+
+    public String toStringNoId(){
+        return "   amount: " + this.amount + "    subTotal: " + this.subTotal.toString();
     }
     
     @Override

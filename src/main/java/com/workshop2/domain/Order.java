@@ -46,7 +46,7 @@ public class Order {
     private OrderStatus orderStatus;
     @OneToMany
     @JoinColumn(name = "ORDER_ID")
-    private final List<OrderItem> orderItemList = new ArrayList<>();
+    private List<OrderItem> orderItemList = new ArrayList<>();
     //@JoinColumn(name = "CUSTOMER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
@@ -87,8 +87,7 @@ public class Order {
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
-    
-    
+
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -99,6 +98,10 @@ public class Order {
     
     public void addToOrderItemList(OrderItem orderItem) {
         orderItemList.add(orderItem);
+    }
+    
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 
     public Customer getCustomer() {
@@ -115,7 +118,7 @@ public class Order {
     }
 
     public String toStringNoId() {
-        return String.format("%-10.2f%-15s%-20s", this.getTotalPrice(), this.getDateTime().toLocalDate().toString(), this.getOrderStatus().toString());
+        return String.format("%-30s%-10.2f%-15s%-20s", this.getCustomer().getLastName(), this.getTotalPrice(), this.getDateTime().toLocalDate().toString(), this.getOrderStatus().toString());
     }
 
     @Override

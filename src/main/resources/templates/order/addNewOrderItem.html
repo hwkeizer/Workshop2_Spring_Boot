@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Toevoegen nieuwe bestelregel</h1>
+            
+            <form method="POST" th:action="@{/orders/addorderitem}" th:object="${orderItem}"  >
+               <div class="errors" th:if="${#fields.hasErrors('*')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('*')}" 
+                            th:text="${err}">Onjuiste invoer</li>
+                    </ul>
+                </div>
+                <!--<label th:class="${#fields.hasErrors('orderItem.product')}? 'error'">Productnaam</label>
+                <select th:field="*{orderItem.product}">
+                    <option th:each="dropDownItem : ${productList.name}"
+                                     th:value="${dropDownItem}"
+                                     th:text="${dropDownItem}" />
+                </select><br/><br/>-->
+                
+                <label th:class="${#fields.hasErrors('amount')}? 'error'">Aantal</label>: 
+                <input type="number" th:field="*{amount}" required="required"
+                       th:class="${#fields.hasErrors('amount')}? 'error'" /><br/><br/>
+
+                <input type="submit" value="Toevoegen" />
+
+            </form>
+            
+        </div>
+    </body>
+</html>
