@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
+import static jdk.nashorn.internal.runtime.Debug.id;
+import static org.apache.tomcat.jni.Buffer.address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,12 +40,12 @@ public class AddressController {
     private AddressRepository addressRepository;
     @Autowired
     private CustomerRepository customerRepository;
-
+    
     @GetMapping(path = "/add")
     public String addAddress(Model model) {
-        
-                
+        List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values())); 
         model.addAttribute(new Address());
+        model.addAttribute("addressTypeList", addressTypeList);     
         return "addNewAddress";
     }
 
@@ -56,11 +58,11 @@ public class AddressController {
     @PostMapping(path = "/add")
     public String addNewAccount(@Valid Address address, Errors errors, RedirectAttributes model) {
         if (errors.hasErrors()) {
-            model.addAttribute(new Address());
+            List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values())); 
+            model.addAttribute("addressTypeList", addressTypeList);
             return "addNewAddress";
         }
-
-        addressRepository.save(address);
+        addressRepository.save(address.setCustomer(customerRepository.findOne(id)));
         model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
     }

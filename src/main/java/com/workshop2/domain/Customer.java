@@ -31,7 +31,7 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private Long id;
+    public Long id;
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Column(name = "LAST_NAME")

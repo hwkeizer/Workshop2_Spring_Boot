@@ -31,19 +31,19 @@ and open the template in the editor.
 
                 <label>City</label>: 
                 <input type="text" th:field="*{city}" required="required" 
-                      /><br/><br/>
+                       /><br/><br/>
 
                 <label >CustomerId</label>:
-               <input type="number"  required="required" 
-                      />
-                   
-                <br/><br/>
+                <input type="number"  required="required" 
+                       th:field="*{customer.id}"
+                       />
+
 
                 <label>AddressType</label>
                 <select th:field="*{addressType}">
-                    <option>POSTADRES</option> 
-                    <option>FACTUURADRES</option>
-                    <option>BEZORGADRES</option>                           
+                    <option th:each="dropDownItem : ${addressTypeList}"
+                            th:value="${dropDownItem}"
+                            th:text="${dropDownItem}" />
 
                 </select> <br/><br/>
                 <input type="submit" value="Toevoegen" />
