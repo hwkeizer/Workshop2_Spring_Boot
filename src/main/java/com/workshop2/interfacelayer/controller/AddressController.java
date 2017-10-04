@@ -56,15 +56,18 @@ public class AddressController {
     }
 
     @PostMapping(path = "/add")
-    public String addNewAccount(@Valid Address address, Errors errors, RedirectAttributes model) {
+    public String addNewAddress(@Valid Address address, Errors errors, RedirectAttributes model) {
         if (errors.hasErrors()) {
             List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values())); 
             model.addAttribute("addressTypeList", addressTypeList);
             return "addNewAddress";
         }
-        addressRepository.save(address.setCustomer(customerRepository.findOne(id)));
+       Customer customer = customerRepository.findOne(address.getCustomer().getId());
+        address.setCustomer(customer);
+        addressRepository.save(address);
         model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
+    }
     }
     
     
@@ -97,5 +100,3 @@ public class AddressController {
     Iterable<Address> getAllAddresses() {
         return addressRepository.findAll();
     }*/
-
-}

@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import static org.apache.tomcat.jni.Buffer.address;
 
 /**
  *
@@ -28,6 +29,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "CUSTOMER")
 public class Customer implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
@@ -44,8 +46,11 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     //@JoinColumn(name = "CUSTOMER_ID")
     private List<Order> orderList = new ArrayList<>();
-    
-    public Customer() {}
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Address> addressList = new ArrayList<>();
+
+    public Customer() {
+    }
 
     public Long getId() {
         return id;
@@ -77,7 +82,9 @@ public class Customer implements Serializable {
 
     public void setLastNamePrefix(String lastNamePrefix) {
         // prevent null in the output
-        if (lastNamePrefix == null) lastNamePrefix = "";
+        if (lastNamePrefix == null) {
+            lastNamePrefix = "";
+        }
         this.lastNamePrefix = lastNamePrefix;
     }
 
@@ -88,29 +95,38 @@ public class Customer implements Serializable {
     public void setAccount(Account account) {
         this.account = account;
     }
-    
+
     public List<Order> getOrderList() {
         return orderList;
     }
-    
+
     public void addToOrderList(Order order) {
         orderList.add(order);
     }
-        
-    @Override
-    public String toString(){
-        if(getLastNamePrefix() != null) 
-            return String.format("%-5d%-20s%-15s%-20s", getId(), getFirstName(), getLastNamePrefix(), getLastName());
-        
-        else
-            return String.format("%-5d%-20s%-15s%-20s", getId(), getFirstName(), "", getLastName());
+
+    public List<Address> getAddressList() {
+        return addressList;
     }
-    
-    public String toStringNoId(){
-        if(getLastNamePrefix() != null) 
+
+    public void setAddressList(Address address) {
+        addressList.add(address);
+    }
+
+    @Override
+    public String toString() {
+        if (getLastNamePrefix() != null) {
+            return String.format("%-5d%-20s%-15s%-20s", getId(), getFirstName(), getLastNamePrefix(), getLastName());
+        } else {
+            return String.format("%-5d%-20s%-15s%-20s", getId(), getFirstName(), "", getLastName());
+        }
+    }
+
+    public String toStringNoId() {
+        if (getLastNamePrefix() != null) {
             return String.format("%-20s%-15s%-20s", getFirstName(), getLastNamePrefix(), getLastName());
-        else
+        } else {
             return String.format("%-20s%-15s%-20s", getFirstName(), "", getLastName());
+        }
     }
 
     @Override
@@ -154,6 +170,4 @@ public class Customer implements Serializable {
         return true;
     }
 
-    
-        
 }
