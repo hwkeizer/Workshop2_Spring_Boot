@@ -28,12 +28,13 @@
         </table>
 
         <h2 class="center" th:text="${'Subtotaal bestelling: ' + order.totalPrice}"></h2>
-        
+        <br/>
+        <h2 class="center">Alle mogelijke producten zijn reeds toegevoegd.</h2>
+        <h2 class="center">Bestelregel toevoegen is niet meer mogelijk</h2>
         
         <div id="content">  
             <br/>        
 
-            <a class="button center" th:href="@{/orders/addorderitem}">Bestelregel toevoegen</a>
             <a class="button center" th:href="@{/orders/saveorder}">Bestelling opslaan</a>
             <a class="button center" th:href="@{/}">Terug naar home</a>
         </div>

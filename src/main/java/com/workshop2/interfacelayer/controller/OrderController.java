@@ -44,7 +44,7 @@ public class OrderController {
     
     @Scope(value = "session",proxyMode = ScopedProxyMode.TARGET_CLASS)
     private class ScopedOrder extends Order {
-        
+
     }
     
     private ScopedOrder order;
@@ -65,26 +65,31 @@ public class OrderController {
     @GetMapping
     public String orders(Model model) {
 
-        return "order_menu";
+        return "order/order_menu";
     }
     
-    @GetMapping(path="/startneworder")
+    @GetMapping(path="/startaddneworder")
     public String startAddNewOrder(Model model) {
         order = new ScopedOrder();
        
         model.addAttribute("order", order);
-        return "order/addOrder";
+        return "order/addOrder_start";
     }
     
     @GetMapping(path="/addorder")
     public String addNewOrder(Model model) {
-        System.out.println("ORDER BEFORE ACCESSING ORDER OVERVIEW");
-        System.out.println(order.toStringNoId());
-        System.out.println("ADDED ORDERITEM BEFORE ACCESSING ORDER OVERVIEW");
-        System.out.println(order.getOrderItemList().get(0).toStringNoId());
+        List<Product> productList = productRepository.findAll();
+        
+        // Only send products which have not yet been chosen
+        cleanProductList(productList, order.getOrderItemList());
+        model.addAttribute(new OrderItem());
+        model.addAttribute("productList", productList);
         
         model.addAttribute("order", order);
-       return "order/addOrder";
+        if(productList.size() != 0)    
+            return "order/addOrder";
+        else
+            return "order/addOrder_noMoreProducts";
     }
     
     @GetMapping(path="/saveorder")
@@ -95,6 +100,8 @@ public class OrderController {
         orderToSave.setDateTime(LocalDateTime.now());
         orderToSave.setTotalPrice(order.getTotalPrice());
         orderToSave.setOrderItemList(order.getOrderItemList());
+        
+        updateProductStockAfterCreatingOrder(order.getOrderItemList());
         
         for(OrderItem orderItem: orderToSave.getOrderItemList()) {
             orderItemRepository.save(orderItem);
@@ -107,27 +114,43 @@ public class OrderController {
     @GetMapping(path="/addorderitem")
     public String addNewOrderItem(Model model) {
         List<Product> productList = productRepository.findAll();
+        
+        // Only send products which have not yet been chosen
+        cleanProductList(productList, order.getOrderItemList());
         model.addAttribute(new OrderItem());
-        model.addAttribute(productList);
-        String productName = null;
-        model.addAttribute("productName", productName);
+        model.addAttribute("productList", productList);
         
         return "order/addNewOrderItem";
     }
     
     @PostMapping(path="/addorderitem")
     public String addNewOrderItem(@Valid OrderItem orderItem, BindingResult bindingResult, Model model) {
-        System.out.println("POST METHOD WAS REACHED!");
-        
         if(bindingResult.hasErrors()) {
             List<Product> productList = productRepository.findAll();
-            model.addAttribute(productList);
+        
+            // Only send products which have not yet been chosen
+            cleanProductList(productList, order.getOrderItemList());
+            model.addAttribute(new OrderItem());
+            model.addAttribute("productList", productList);
+
+            return "order/addNewOrderItem";
+        }
+        if(orderItem.getAmount() == 0) {
+            // order not empty, go back to overview order so far
+            System.out.println("ORDERITEMLIST SIZE: " + order.getOrderItemList().size());
+            if(order.getOrderItemList().size() != 0)
+                return ("redirect:/orders/addorder");
+            else
+            // entered amount = 0 on first product, so returning to startAddNewOrder    
+                return("redirect:/orders/startaddneworder");
         }
         
-        // fake product for testing
-        List<Product> productList = productRepository.findAll();
-        Product product = productList.get(0);
+        // get the product
+        Long id = orderItem.getProduct().getId();
+        Product product = productRepository.findById(id);
         orderItem.setProduct(product);
+        
+        // calculate and set subtotal
         BigDecimal subTotal = product.getPrice().multiply(new BigDecimal(orderItem.getAmount()));
         orderItem.setSubTotal(subTotal);
         
@@ -141,18 +164,6 @@ public class OrderController {
         
         // set totalPrice
         order.setTotalPrice(calculateOrderPrice(order.getOrderItemList()));
-        
-        // set orderStatus
-        order.setOrderStatus(NIEUW);
-        
-        // order.setDate
-        order.setDateTime(LocalDateTime.now());
-        
-        
-        System.out.println("REACHED JUST BEFORE ORDER PRINT");
-        System.out.println("ORDER IS: ");
-        System.out.println(order.toStringNoId());
-        System.out.println(order.getOrderItemList().get(0).toStringNoId());
 
         return("redirect:/orders/addorder");
     }
@@ -196,6 +207,8 @@ public class OrderController {
         return "order/show1order";
     }
     
+    // Utility methods for managing lists and updating stock
+    
     protected BigDecimal calculateOrderPrice(List<OrderItem> orderItemList) {
         BigDecimal price = new BigDecimal("0.00");
         for(OrderItem orderItem: orderItemList){
@@ -203,5 +216,39 @@ public class OrderController {
 
         }
         return price;
+    }
+    
+    protected void cleanProductList(List<Product> productList, List<OrderItem> orderItemList) {
+        for(OrderItem orderItem: orderItemList) {
+            Product product = orderItem.getProduct();
+            if(productList.contains(product))
+                productList.remove(product);
+        }
+    }
+    
+    protected void updateProductStockAfterCreatingOrder(List<OrderItem> orderItemList) {
+        
+        for(OrderItem orderItem: orderItemList) {
+                Product product = orderItem.getProduct();
+                
+                int amount = orderItem.getAmount();
+                int oldStock = product.getStock();
+                product.setStock(oldStock - amount);
+                
+                productRepository.save(product);
+        }
+    }
+
+    protected void updateProductStockAfterDeletingOrder(List<OrderItem> orderItemList) {
+        
+        for(OrderItem orderItem: orderItemList) {
+            Product product = orderItem.getProduct();
+            
+            int amount = orderItem.getAmount();
+            int oldStock = product.getStock();
+            product.setStock(oldStock + amount);
+            
+            productRepository.save(product);
+        }
     }
 }

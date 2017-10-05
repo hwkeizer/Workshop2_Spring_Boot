@@ -21,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -39,7 +40,8 @@ public class OrderItem {
     private Product product;
     @Column(name = "AMOUNT")
     @NotNull(message="Voer het aantal van dit product in dat u wilt bestellen")
-    private int amount;
+    @Min(value=0, message="Aantal moet positief zijn, voer 0 in om product niet toe te voegen.")
+    private Integer amount;
     @Column(name = "SUB_TOTAL")
     private BigDecimal subTotal;
     
@@ -67,11 +69,11 @@ public class OrderItem {
         this.product = product;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
@@ -97,7 +99,7 @@ public class OrderItem {
         int hash = 7;
         hash = 83 * hash + Objects.hashCode(this.id);
         hash = 83 * hash + Objects.hashCode(this.product);
-        hash = 83 * hash + this.amount;
+        hash = 83 * hash + Objects.hashCode(this.amount);
         hash = 83 * hash + Objects.hashCode(this.subTotal);
         return hash;
     }
@@ -120,7 +122,7 @@ public class OrderItem {
         if (!Objects.equals(this.product, other.product)) {
             return false;
         }
-        if (this.amount != other.amount) {
+        if (!Objects.equals(this.amount, other.amount)) {
             return false;
         }
         if (!Objects.equals(this.subTotal, other.subTotal)) {
