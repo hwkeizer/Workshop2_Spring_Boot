@@ -40,7 +40,7 @@ public class Customer implements Serializable {
     @Column(name = "FIRST_NAME")
     private String firstName;
     @NotNull(message="Achternaam mag niet leeg zijn")
-    @Size(min=1, max=16, message="Achternaam moet minimaal 1 tot maximaal 16 tekens bevatten")
+    @Size(min=3, max=16, message="Achternaam moet minimaal 3 tot maximaal 16 tekens bevatten")
     @Column(name = "LAST_NAME")
     private String lastName;
     @Column(name = "LAST_NAME_PREFIX")

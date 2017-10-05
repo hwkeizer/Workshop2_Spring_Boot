@@ -39,7 +39,7 @@ public class CustomerController {
     @PostMapping(path="/add")
     public String addCustomer(@Valid Customer customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "addAccountForm";
+            return "customer/addCustomerForm";
         }
         // Add a default account for the new customer
         customer.setAccount(accountController.createAccountForNewCustomer(customer.getFirstName(),

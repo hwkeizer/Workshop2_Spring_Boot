@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <title>Klant toevoegen</title>
         <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
-  </head>
-  <body>
+</head>
+    <body>
     <div id="content">
-      <h1 class="center"> Klant toevoegen</h1>
+        <h1 class="center"> Klant toevoegen</h1>
   
-      <form method="POST" th:action="@{/customers/add}" th:object="${customer}">
+        <form method="POST" th:action="@{/customers/add}" th:object="${customer}">
         <div class="formfields">
             <div class="errors" th:if="${#fields.hasErrors('*')}">
                 <ul>
@@ -18,7 +18,7 @@
                 </ul>
             </div>
             <label th:class="${#fields.hasErrors('firstName')}? 'error'">Voornaam</label> 
-                <input type="text" th:field="*{firstName}"  
+                <input type="text" th:field="*{firstName}" required="required" 
                      th:class="${#fields.hasErrors('firstName')}? 'error'" /><br/>
             <br/>
             <label  th:class="${#fields.hasErrors('lastNamePrefix')}? 'error'">Tussenvoegsel</label> 
@@ -32,7 +32,7 @@
             <br/>
         </div>
         <input class="button" type="submit" value="Toevoegen" />      
-      </form>
+        </form>
     </div>
-  </body>
+    </body>
 </html>

@@ -49,7 +49,7 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
             model.addAttribute(accountTypeList);
-            return "addAccountForm";
+            return "account/addAccountForm";
         }
         account.setPassword(PasswordHash.generateHash(account.getPassword()));
         try {
