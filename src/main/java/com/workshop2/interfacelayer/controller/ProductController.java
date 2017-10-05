@@ -8,12 +8,17 @@ package com.workshop2.interfacelayer.controller;
 import com.workshop2.domain.Product;
 import com.workshop2.interfacelayer.repository.ProductRepository;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import static java.util.Collections.list;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,18 +51,63 @@ public class ProductController {
 
     @PostMapping(path = "/add")
     public String addNewProduct(@Valid Product product, RedirectAttributes model, Errors errors) {
-        
+
         if (errors.hasErrors()) {
-            model.addAttribute(new Product()); 
+            model.addAttribute(new Product());
             return "addNewProduct";
         }
 
         productRepository.save(product);
-         model.addAttribute("productList", productRepository.findAll());
+        model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
 
-  /*  @GetMapping(path = "/add")
+    @GetMapping(path = "/delete")
+    public String ProductList(Model model) {
+        List naamList = getAllProductsNaam();
+        model.addAttribute(new Product());
+        model.addAttribute("productNaamlist", naamList);
+        return "deleteProduct";
+    }
+
+    @DeleteMapping(path = "/delete")
+    public String deleteProduct(/*@PathVariable String naam*/ @Valid Product product,RedirectAttributes model, Errors errors) {
+          
+        if (errors.hasErrors()) {
+            List naamList = getAllProductsNaam();
+            model.addAttribute("productNaamlist", naamList);
+            return "deleteProduct";
+        }
+        
+       
+       // Product prod = getProduct(naam);
+       Product prod = getProduct(product.getName());
+        productRepository.delete(prod);
+        model.addAttribute("productList", productRepository.findAll());
+        return ("redirect:/products");
+    }
+       
+    public List<String> getAllProductsNaam() {
+        List<Product> products = productRepository.findAll();
+        List<String> naamList = new ArrayList<>();
+        for (Product product : products) {
+            naamList.add(product.getName());
+        }
+        return naamList;
+    }
+    public Product getProduct(String productNaam){
+         List<Product> products = productRepository.findAll();
+         Product product = new Product();
+         for (Product prod : products) 
+            if(prod.getName().equals(productNaam))
+                product = prod;
+         return product;
+        }
+         
+    
+    
+
+    /*  @GetMapping(path = "/add")
     public @ResponseBody
     String addNewProduct(
             @RequestParam String name,
@@ -89,5 +139,4 @@ public class ProductController {
         model.addAttribute("productList", productRepository.findAll());
         return "products";
     }*/
-
 }
