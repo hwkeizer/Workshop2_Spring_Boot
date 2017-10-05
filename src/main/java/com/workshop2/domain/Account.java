@@ -79,11 +79,11 @@ public class Account implements Serializable {
     
     @Override
     public String toString(){
-        return String.format("%-5d%-20s%-20s%-5d", this.getId(), this.getUsername(), getPassword(), this.getAccountType());
+        return String.format("%-5d%-20s%-20s%-20s", this.getId(), this.getUsername(), getPassword(), this.getAccountType());
     }
     
     public String toStringNoId(){
-        return String.format("%-20s%-20s%-5d", this.getUsername(), "********", this.getAccountType());
+        return String.format("%-20s%-20s%-20s", this.getUsername(), "********", this.getAccountType());
     }
 
     @Override

@@ -35,14 +35,13 @@ public class AccountController {
     
     @Autowired
     private AccountRepository accountRepository;
-        
+    
     @GetMapping(path="/add")
     public String showaddAccountForm(Model model) {
-
         List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
         model.addAttribute(new Account());        
         model.addAttribute(accountTypeList);
-        return "addAccountForm";
+        return "account/addAccountForm";
     }
     
     @PostMapping(path="/add")
@@ -57,16 +56,14 @@ public class AccountController {
             accountRepository.save(account);
             return("redirect:/accounts");
         } catch(DataIntegrityViolationException e) {
-            return("error/duplicate_account");
+            return("account/err_duplicate_account");
         }
     }
 
-        
     @GetMapping
-    public String Accounts(Model model) {
-        
+    public String Accounts(Model model) {        
         model.addAttribute("accountList", accountRepository.findAll());
-        return "accounts";
+        return "account/accounts";
     }
       
     public boolean validateAccount(String username, String password) {
@@ -81,6 +78,7 @@ public class AccountController {
         }
     }
     
+    // 
     public AccountType getUserRole(String username) {
         Account account = new Account();
         account.setUsername(username);

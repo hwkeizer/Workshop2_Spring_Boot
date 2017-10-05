@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Klant toevoegen</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <div id="content">
+      <h1 class="center"> Klant toevoegen</h1>
+  
+      <form method="POST" th:action="@{/customers/add}" th:object="${customer}">
+        <div class="formfields">
+            <div class="errors" th:if="${#fields.hasErrors('*')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" 
+                        th:text="${err}">Veld onjuist ingevuld</li>
+                </ul>
+            </div>
+            <label th:class="${#fields.hasErrors('firstName')}? 'error'">Voornaam</label> 
+                <input type="text" th:field="*{firstName}"  
+                     th:class="${#fields.hasErrors('firstName')}? 'error'" /><br/>
+            <br/>
+            <label  th:class="${#fields.hasErrors('lastNamePrefix')}? 'error'">Tussenvoegsel</label> 
+                <input type="text" th:field="*{lastNamePrefix}"  
+                     th:class="${#fields.hasErrors('lastNamePrefix')}? 'error'" /><br/> 
+            <br/>
+                <label  th:class="${#fields.hasErrors('lastName')}? 'error'">Achternaam</label> 
+                <input type="text" th:field="*{lastName}"  
+                     th:class="${#fields.hasErrors('lastName')}? 'error'" /><br/> 
+            <br/>
+            <br/>
+        </div>
+        <input class="button" type="submit" value="Toevoegen" />      
+      </form>
+    </div>
+  </body>
+</html>

@@ -20,7 +20,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import static org.apache.tomcat.jni.Buffer.address;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,17 +35,21 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     public Long id;
+    @NotNull(message="Voornaam mag niet leeg zijn")
+    @Size(min=1, max=16, message="Voornaam moet minimaal 1 tot maximaal 16 tekens bevatten")
     @Column(name = "FIRST_NAME")
     private String firstName;
+    @NotNull(message="Achternaam mag niet leeg zijn")
+    @Size(min=1, max=16, message="Achternaam moet minimaal 1 tot maximaal 16 tekens bevatten")
     @Column(name = "LAST_NAME")
     private String lastName;
     @Column(name = "LAST_NAME_PREFIX")
+    @Size(max=16, message="Tussenvoegsel mag maximaal 16 tekens bevatten")
     private String lastNamePrefix;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    //@JoinColumn(name = "CUSTOMER_ID")
     private List<Order> orderList = new ArrayList<>();
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Address> addressList = new ArrayList<>();
