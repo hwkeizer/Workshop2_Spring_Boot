@@ -5,7 +5,9 @@
  */
 package com.workshop2.interfacelayer.controller;
 
+import com.workshop2.domain.OrderItem;
 import com.workshop2.domain.Product;
+import com.workshop2.interfacelayer.repository.OrderItemRepository;
 import com.workshop2.interfacelayer.repository.ProductRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,12 +17,14 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,6 +40,8 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderController orderController;
     @GetMapping(path = "/add")
     public String addProduct(Model model) {
         model.addAttribute(new Product());
@@ -62,28 +68,28 @@ public class ProductController {
         return ("redirect:/products");
     }
 
-    @GetMapping(path = "/delete")
-    public String ProductList(Model model) {
+     @RequestMapping(value="/delete/{name}", method = RequestMethod.GET)
+    //@GetMapping(path = "/delete")
+    public String ProductList(@PathVariable String name, Model model) {
         List naamList = getAllProductsNaam();
-        model.addAttribute(new Product());
+       
+        model.addAttribute( getProduct(name));
         model.addAttribute("productNaamlist", naamList);
         return "deleteProduct";
     }
 
-    @DeleteMapping(path = "/delete")
-    public String deleteProduct(/*@PathVariable String naam*/ @Valid Product product,RedirectAttributes model, Errors errors) {
+    @RequestMapping(value="/delete", method = RequestMethod.POST)
+    public String deleteProduct(Product product, Model model, BindingResult result) {
           
-        if (errors.hasErrors()) {
+        if (result.hasErrors()) {
             List naamList = getAllProductsNaam();
             model.addAttribute("productNaamlist", naamList);
             return "deleteProduct";
         }
-        
-       
-       // Product prod = getProduct(naam);
-       Product prod = getProduct(product.getName());
-        productRepository.delete(prod);
-        model.addAttribute("productList", productRepository.findAll());
+       OrderItem orderItem = orderController.findOrderItem(product.getId());
+       orderItem.setProduct(null);
+        productRepository.delete(product);
+        //model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
        

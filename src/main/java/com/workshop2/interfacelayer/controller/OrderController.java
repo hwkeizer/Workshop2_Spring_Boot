@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -250,5 +251,12 @@ public class OrderController {
             
             productRepository.save(product);
         }
+    }
+    
+     public OrderItem findOrderItem(Long productId) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProduct(productRepository.findOne(productId));
+        Example<OrderItem> example = Example.of(orderItem);
+        return orderItemRepository.findOne(example);        
     }
 }

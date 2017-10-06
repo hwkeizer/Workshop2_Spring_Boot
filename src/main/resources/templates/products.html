@@ -21,6 +21,7 @@ and open the template in the editor.
                     <th>ProductName</th>
                     <th>ProductPrice</th>
                     <th>Nr.Stock</th>
+                     <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -28,12 +29,15 @@ and open the template in the editor.
                     <td th:text="${product.name}"></td>
                     <td th:text="${product.price}"></td>
                     <td th:text="${product.stock}"></td>
+                    <td class="small">
+                        <a th:href="@{'/products/delete/' + ${product.id}}"><img src="../images/delete-icon.png" alt="delete"/></a>
+                    </td>
                 </tr>
             </tbody>            
         </table>
         <br/>
          <a class="button center" th:href="@{/products/add}">Nieuwe product toevoegen</a>
-         <a class="button center" th:href="@{/products/delete}">Het verwijderen van een product</a>
+         <!--<a class="button center" th:href="@{/products/delete}">Het verwijderen van een product</a>-->
          <a class="button center" th:href="@{/home}">Naar home pagina terug!</a>
       </div> 
     </body>
