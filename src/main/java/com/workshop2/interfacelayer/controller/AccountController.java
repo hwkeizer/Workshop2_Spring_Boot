@@ -7,6 +7,7 @@ package com.workshop2.interfacelayer.controller;
 
 import com.workshop2.domain.Account;
 import com.workshop2.domain.AccountType;
+import com.workshop2.domain.Customer;
 import com.workshop2.interfacelayer.repository.AccountRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -35,6 +40,8 @@ public class AccountController {
     
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private CustomerController customerController;
     
     @GetMapping(path="/add")
     public String showaddAccountForm(Model model) {
@@ -65,7 +72,57 @@ public class AccountController {
         model.addAttribute("accountList", accountRepository.findAll());
         return "account/accounts";
     }
-      
+    
+
+    @RequestMapping(value="/edit/{id}", method= RequestMethod.GET)
+    public String showEditAccount(@PathVariable Long id, Model model) {
+        model.addAttribute(accountRepository.findOne(id));
+        List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
+        model.addAttribute(accountTypeList);
+        return "account/editAccountForm";
+    }
+    
+    @RequestMapping(value="/edit", method= RequestMethod.POST)
+    public String editAccount(Account account, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
+            model.addAttribute(accountTypeList);
+            return "account/editAccountForm";
+        }
+        // TODO: Wachtwoord moet blijkbaar specifiek gezet worden anders is ie leeg??? Uitzoeken!!!!
+        account.setPassword(PasswordHash.generateHash("welkom"));
+        try {
+            accountRepository.save(account);
+            return("redirect:/accounts");
+        } catch(DataIntegrityViolationException e) {
+            return("account/err_duplicate_account");
+        }
+    }
+    
+    @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+    public String showDeleteAccount(@PathVariable Long id, Model model) {
+        model.addAttribute(accountRepository.findOne(id));
+        List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
+        model.addAttribute(accountTypeList);
+        return "account/deleteAccountForm";
+    }
+    
+    @RequestMapping(value="/delete", method = RequestMethod.POST)
+    public String deleteAccount(Account account, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<AccountType> accountTypeList = new ArrayList<>(Arrays.asList(AccountType.values()));
+            model.addAttribute(accountTypeList);
+            return "account/editAccountForm";
+        }
+        // find customers that reference this account and set the account filed on null
+        List<Customer> customerList = customerController.findCustomerByAccountId(account.getId());
+        for (Customer customer : customerList) {
+            customer.setAccount(null);
+        }
+        accountRepository.delete(account);
+        return("redirect:/accounts");
+        }
+        
     public boolean validateAccount(String username, String password) {
         Account account = new Account();
         account.setUsername(username);

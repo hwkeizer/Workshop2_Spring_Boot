@@ -6,9 +6,12 @@
 package com.workshop2.interfacelayer.controller;
 
 import com.workshop2.domain.Customer;
+import com.workshop2.interfacelayer.repository.AccountRepository;
 import com.workshop2.interfacelayer.repository.CustomerRepository;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +30,8 @@ public class CustomerController {
     
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private AccountController accountController;
     
@@ -57,6 +62,13 @@ public class CustomerController {
     public String customers(Model model) {        
         model.addAttribute("customerList", customerRepository.findAll());
         return "customer/customers";
+    }
+    
+    public List<Customer> findCustomerByAccountId(Long accountId) {
+        Customer customer = new Customer();
+        customer.setAccount(accountRepository.findOne(accountId));
+        Example<Customer> example = Example.of(customer);
+        return customerRepository.findAll(example);        
     }
     
 }

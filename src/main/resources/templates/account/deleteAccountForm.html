@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Account toevoegen</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <div id="content">
+      <h1 class="center"> Account verwijderen</h1>
+  
+      <form method="POST" th:action="@{/accounts/delete}" th:object="${account}">
+        <div class="formfields">
+            <div class="errors" th:if="${#fields.hasErrors('*')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" 
+                        th:text="${err}">Veld onjuist ingevuld</li>
+                </ul>
+            </div>
+            <label th:class="${#fields.hasErrors('id')}? 'error'" >ID</label> 
+                <input readonly='readonly' type="text" th:field="*{id}"  
+                     th:class="${#fields.hasErrors('id')}? 'error'" /><br/>
+            <br/>
+            <label th:class="${#fields.hasErrors('username')}? 'error'" >Account naam</label> 
+                <input readonly='readonly' type="text" th:field="*{username}"  
+                     th:class="${#fields.hasErrors('username')}? 'error'" /><br/>
+            <br/>
+            <label  th:class="${#fields.hasErrors('password')}? 'error'">Wachtwoord</label> 
+                <input readonly='readonly' type="password" value='********'  
+                     th:class="${#fields.hasErrors('password')}? 'error'" /><br/> 
+            <br/>
+            <label th:class="${#fields.hasErrors('accountType')}? 'error'">Account type</label>
+                <select th:field="*{accountType}">
+                    <option th:each="dropDownItem : ${accountTypeList}"
+                                     th:value="${dropDownItem}"
+                                     th:text="${dropDownItem}" />
+                </select>
+            <br/>
+            <br/>
+        </div>
+        <input class="button" type="submit" value="Verwijderen" />
+        <a class="button center" th:href="@{/home}">Home</a>
+      </form>
+    </div>
+  </body>
+</html>

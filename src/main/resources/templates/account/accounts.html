@@ -12,15 +12,27 @@
             <thead>
                 <tr>
                     <th>Accountnaam</th>
-                    <th>Wachtwoord (hashed)</th>
+                    <th>Wachtwoord</th>
                     <th>Account type</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="account:${accountList}">
                     <td th:text="${account.username}"></td>
-                    <td th:text="${account.password}"></td>
+                    <td>********</td>
                     <td th:text="${account.accountType}"></td>
+                    <td class="small">
+                        <div class="editbutton">
+                            <a class="icon" th:href="@{'/accounts/edit/' + ${account.id}}"><img src="../images/edit-icon.png" alt="edit"/></a>
+                        </div>
+                    </td>
+                    <td class="small">
+                        <div class="editbutton">
+                        <a class="icon" th:href="@{'/accounts/delete/' + ${account.id}}"><img src="../images/delete-icon.png" alt="delete"/></a>
+                        </div>
+                    </td>
                 </tr>
             </tbody>            
         </table>

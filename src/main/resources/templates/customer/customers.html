@@ -20,7 +20,7 @@
                 <tr th:each="customer:${customerList}">
                     <td th:text="${customer.lastName}"></td>
                     <td th:text="${customer.firstName + ' ' + customer.lastNamePrefix}"></td>
-                    <td th:text="${customer.account.username}"></td>
+                    <td th:text="${customer.account != null} ? ${customer.account.username} : 'Geen account'"></td>
                 </tr>
             </tbody>            
         </table>
