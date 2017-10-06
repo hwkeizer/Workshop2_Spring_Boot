@@ -93,3 +93,13 @@ table, th, td {
 .small {
     width: 32px;
 }
+
+/* Tabellen details */
+.customers {
+
+    width: 600px;
+}
+
+.firstcol {
+    width: 300px;
+}

@@ -5,6 +5,8 @@
  */
 package com.workshop2.interfacelayer.controller;
 
+import com.workshop2.domain.Address;
+import com.workshop2.domain.Address.AddressType;
 import com.workshop2.domain.Customer;
 import com.workshop2.interfacelayer.repository.AccountRepository;
 import com.workshop2.interfacelayer.repository.CustomerRepository;
@@ -84,6 +86,21 @@ public class CustomerController {
         }
         customerRepository.delete(customer);
         return "redirect:/customers";
+    }
+    
+    @RequestMapping(value="/details/{id}", method=RequestMethod.GET)
+    public String showCustomerDetails(@PathVariable Long id, Model model) {
+        Customer customer = customerRepository.findOne(id);
+        List<Address> addressList = customer.getAddressList();
+        for (Address address : addressList) {
+            switch (address.getAddressType()) {
+                case POSTADRES: model.addAttribute("postadres", address); break;
+                case BEZORGADRES: model.addAttribute("bezorgadres", address); break;
+                case FACTUURADRES: model.addAttribute("factuuradres", address); break;
+            }
+        }
+        model.addAttribute(customer); 
+        return "customer/details";
     }
     
     
