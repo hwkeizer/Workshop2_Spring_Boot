@@ -14,6 +14,8 @@
                     <th>Achternaam</th>
                     <th>Voornaam</th>
                     <th>Accountnaam</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +23,12 @@
                     <td th:text="${customer.lastName}"></td>
                     <td th:text="${customer.firstName + ' ' + customer.lastNamePrefix}"></td>
                     <td th:text="${customer.account != null} ? ${customer.account.username} : 'Geen account'"></td>
+                    <td class="small">              
+                            <a th:href="@{'/customers/edit/' + ${customer.id}}"><img src="../images/edit-icon.png" alt="edit"/></a>
+                    </td>
+                    <td class="small">
+                        <a th:href="@{'/customers/delete/' + ${customer.id}}"><img src="../images/delete-icon.png" alt="delete"/></a>
+                    </td>
                 </tr>
             </tbody>            
         </table>

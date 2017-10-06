@@ -90,21 +90,6 @@ table, th, td {
     background-color: lightcoral;
 }
 
-/* Icon images for edit and delete */
-.icon {
-    display: block;
-}
-
-a.interactive {
-    width: 32px;
-    height: 32px;
-    padding-left:40px;
-    display:inline-block;
-    text-decoration: none;
-    background: url(../images/edit-icon.png) left center no-repeat;
-    vertical-align:text-center;
-}
-
 .small {
     width: 32px;
 }

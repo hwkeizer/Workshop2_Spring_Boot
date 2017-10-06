@@ -11,13 +11,16 @@ import com.workshop2.interfacelayer.repository.CustomerRepository;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -52,6 +55,37 @@ public class CustomerController {
         System.out.println(customerRepository.save(customer));
         return("redirect:/customers");
     }
+    
+    @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
+    public String showEditCustomer(@PathVariable Long id, Model model) {
+        model.addAttribute(customerRepository.findOne(id));
+        return "customer/editCustomerForm";
+    }
+    
+    @RequestMapping(value="/edit", method=RequestMethod.POST)
+    public String editCustomer(Customer customer, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "customer/editCustomerForm";
+        }
+        customerRepository.save(customer);
+        return "redirect:/customers";
+    }
+    
+    @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+    public String showDeleteCustomer(@PathVariable Long id, Model model) {
+        model.addAttribute(customerRepository.findOne(id));
+        return "customer/deleteCustomerForm";
+    }
+    
+    @RequestMapping(value="/delete", method=RequestMethod.POST)
+    public String deleteCustomer(Customer customer, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "customer/deleteCustomerForm";
+        }
+        customerRepository.delete(customer);
+        return "redirect:/customers";
+    }
+    
     
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Customer> getAllCustomers() {

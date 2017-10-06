@@ -23,15 +23,11 @@
                     <td th:text="${account.username}"></td>
                     <td>********</td>
                     <td th:text="${account.accountType}"></td>
-                    <td class="small">
-                        <div class="editbutton">
-                            <a class="icon" th:href="@{'/accounts/edit/' + ${account.id}}"><img src="../images/edit-icon.png" alt="edit"/></a>
-                        </div>
+                    <td class="small">              
+                        <a th:href="@{'/accounts/edit/' + ${account.id}}"><img src="../images/edit-icon.png" alt="edit"/></a>
                     </td>
                     <td class="small">
-                        <div class="editbutton">
-                        <a class="icon" th:href="@{'/accounts/delete/' + ${account.id}}"><img src="../images/delete-icon.png" alt="delete"/></a>
-                        </div>
+                        <a th:href="@{'/accounts/delete/' + ${account.id}}"><img src="../images/delete-icon.png" alt="delete"/></a>
                     </td>
                 </tr>
             </tbody>            

@@ -114,7 +114,7 @@ public class AccountController {
             model.addAttribute(accountTypeList);
             return "account/editAccountForm";
         }
-        // find customers that reference this account and set the account filed on null
+        // find customers that reference this account and set the account field to null
         List<Customer> customerList = customerController.findCustomerByAccountId(account.getId());
         for (Customer customer : customerList) {
             customer.setAccount(null);
