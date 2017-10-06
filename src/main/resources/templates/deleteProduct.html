@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Delete product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1>Als u een product wilt verwijderen</h1><br/>
+            <h2>dan voeg het naam toe ... </h2>
+
+            <form method="POST" th:action="@{/products/delete}" th:object="${product}" >
+
+                <label>ProductID</label>:
+                <input type="text" th:field="*{id}" readonly='readonly' /><br/> <br/>        
+                
+                <label>ProductNaam</label>:                 
+                <input type="text" th:field="*{name}" readonly='readonly' /><br/><br/>
+                
+                <label>ProductPrice</label>:
+                <input type="text" th:field="*{price}" readonly='readonly' /><br/><br/>
+
+                <label>Nr.Stock</label>: 
+                <input type="number" th:field="*{stock}" readonly='readonly'/><br/><br/>
+
+                <input  type="submit" value="delete" />       
+            </form>
+        </div>
+    </body>
+</html>
