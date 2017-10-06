@@ -20,10 +20,13 @@ import static org.apache.tomcat.jni.Buffer.address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,38 +43,83 @@ public class AddressController {
     private AddressRepository addressRepository;
     @Autowired
     private CustomerRepository customerRepository;
-    
-    @GetMapping(path = "/add")
-    public String addAddress(Model model) {
-        List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values())); 
-        model.addAttribute(new Address());
-        model.addAttribute("addressTypeList", addressTypeList);     
-        return "addNewAddress";
-    }
 
     @GetMapping
     public String Addresses(Model model) {
         model.addAttribute("addressList", addressRepository.findAll());
-        return "addresses";
+        return "address/addresses";
+    }
+
+    /*@GetMapping(path = "/all")
+    public @ResponseBody Iterable<Address> getAllAddresses() {
+        return addressRepository.findAll();
+    }*/
+    @GetMapping(path = "/add")
+    public String addAddress(Model model) {
+        List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
+        model.addAttribute(new Address());
+        model.addAttribute("addressTypeList", addressTypeList);
+        return "address/addNewAddress";
     }
 
     @PostMapping(path = "/add")
     public String addNewAddress(@Valid Address address, Errors errors, RedirectAttributes model) {
         if (errors.hasErrors()) {
-            List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values())); 
+            List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
             model.addAttribute("addressTypeList", addressTypeList);
-            return "addNewAddress";
+            return "address/addNewAddress";
         }
-       Customer customer = customerRepository.findOne(address.getCustomer().getId());
+        Customer customer = customerRepository.findOne(address.getCustomer().getId());
         address.setCustomer(customer);
         addressRepository.save(address);
         model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String AddressToDelete(@PathVariable long id, Model model) {
+        model.addAttribute(addressRepository.findOne(id));
+        return "address/deleteAddress";
     }
-    
-    
-    /*@GetMapping(path = "/add")
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String deleteAddress(Address address, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return "address/deleteAddress";
+        }
+        Customer customer = customerRepository.findOne(address.getCustomer().getId());
+        List<Address> addresses = customer.getAddressList();
+        for(Address adres: addresses)
+            if (adres.getPostalCode() == address.getPostalCode())
+                adres = null;
+        addressRepository.delete(address);
+        return ("redirect:/addresses");
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String AddressToUpdate(@PathVariable long id, Model model) {
+        List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
+        model.addAttribute(addressRepository.findOne(id));
+        model.addAttribute("addressTypeList", addressTypeList);
+        return "address/updateAddress";
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String updateAddress(Address address, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
+            model.addAttribute("addressTypeList", addressTypeList);
+            return "address/updateAddress";
+        }
+        addressRepository.save(address);
+        return ("redirect:/addresses");
+    }
+
+}
+
+/*@GetMapping(path = "/add")
     public @ResponseBody
     String addNewAddress(
             @RequestParam String streetName,
@@ -95,8 +143,4 @@ public class AddressController {
         return "Saved";
     }
 
-    @GetMapping(path = "/all")
-    public @ResponseBody
-    Iterable<Address> getAllAddresses() {
-        return addressRepository.findAll();
-    }*/
+ */

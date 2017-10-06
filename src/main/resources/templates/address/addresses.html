@@ -23,7 +23,9 @@ and open the template in the editor.
                         <th>PostalCode</th>
                         <th>City</th>
                         <th>AddressType</th>
-                       <th>KlantName</th>
+                        <th>KlantName</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,13 +36,19 @@ and open the template in the editor.
                         <td th:text="${address.postalCode}"></td>
                         <td th:text="${address.city}"></td>
                         <td th:text="${address.addressType}"></td>
-                        <td th:text="${address.customer.firstName + ' ' + address.customer.lastNamePrefix}"></td>
+                        <td th:text="${address.customer.firstName + ' ' + address.customer.lastName}"></td>
+                        <td class="small"> 
+                            <a th:href="@{'/addresses/update/' + ${address.id}}"><input type="submit" value="update"/></a>
+                        </td>
+                        <td class="small"> 
+                            <a th:href="@{'/addresses/delete/' + ${address.id}}"><input type="submit" value="delete"/></a>
+                        </td>
                     </tr>
                 </tbody>            
             </table>
-        <br/>
-         <a class="button center" th:href="@{/addresses/add}">Nieuwe address toevoegen</a>
-         <a class="button center" th:href="@{/home}">Naar home pagina terug!</a>
+            <br/>
+            <a class="button center" th:href="@{/addresses/add}">Nieuwe address toevoegen</a>
+            <a class="button center" th:href="@{/home}">Naar home pagina terug!</a>
         </div>
     </body>
 </html>

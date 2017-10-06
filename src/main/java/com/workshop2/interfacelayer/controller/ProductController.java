@@ -39,28 +39,33 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private OrderController orderController;
-    @GetMapping(path = "/add")
-    public String addProduct(Model model) {
-        model.addAttribute(new Product());
-        return "addNewProduct";
-    }
 
     @GetMapping
     public String Products(Model model) {
 
         model.addAttribute("productList", productRepository.findAll());
-        return "products";
+        return "product/products";
+    }
+    
+    @GetMapping(path="/all")
+    public @ResponseBody Iterable<Product> getAllProducts() {
+     return productRepository.findAll();
+    }
+
+    @GetMapping(path = "/add")
+    public String addProduct(Model model) {
+        model.addAttribute(new Product());
+        return "product/addNewProduct";
     }
 
     @PostMapping(path = "/add")
-    public String addNewProduct(@Valid Product product, RedirectAttributes model, Errors errors) {
+    public String addNewProduct(@Valid Product product, BindingResult result, Model model) {
 
-        if (errors.hasErrors()) {
+        if (result.hasErrors()) {
             model.addAttribute(new Product());
-            return "addNewProduct";
+            return "product/addNewProduct";
         }
 
         productRepository.save(product);
@@ -68,32 +73,42 @@ public class ProductController {
         return ("redirect:/products");
     }
 
-     @RequestMapping(value="/delete/{name}", method = RequestMethod.GET)
-    //@GetMapping(path = "/delete")
-    public String ProductList(@PathVariable String name, Model model) {
-        List naamList = getAllProductsNaam();
-       
-        model.addAttribute( getProduct(name));
-        model.addAttribute("productNaamlist", naamList);
-        return "deleteProduct";
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String ProductToDelete(@PathVariable long id, Model model) {
+        model.addAttribute(productRepository.findById(id));
+        return "product/deleteProduct";
     }
 
-    @RequestMapping(value="/delete", method = RequestMethod.POST)
-    public String deleteProduct(Product product, Model model, BindingResult result) {
-          
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String deleteProduct(Product product, BindingResult result, Model model) {
+
         if (result.hasErrors()) {
-            List naamList = getAllProductsNaam();
-            model.addAttribute("productNaamlist", naamList);
-            return "deleteProduct";
+            return "product/deleteProduct";
         }
-       OrderItem orderItem = orderController.findOrderItem(product.getId());
-       orderItem.setProduct(null);
+        OrderItem orderItem = orderController.findOrderItem(product.getId());
+        orderItem.setProduct(null);
         productRepository.delete(product);
-        //model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
-       
-    public List<String> getAllProductsNaam() {
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String ProductToUpdate(@PathVariable long id, Model model) {
+        model.addAttribute(productRepository.findById(id));
+        return "product/updateProduct";
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String updateProduct(Product product, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return "product/updateProduct";
+        }
+
+        productRepository.save(product);
+        return ("redirect:/products");
+    }
+
+    /*public List<String> getAllProductsNaam() {
         List<Product> products = productRepository.findAll();
         List<String> naamList = new ArrayList<>();
         for (Product product : products) {
@@ -101,19 +116,19 @@ public class ProductController {
         }
         return naamList;
     }
-    public Product getProduct(String productNaam){
-         List<Product> products = productRepository.findAll();
-         Product product = new Product();
-         for (Product prod : products) 
-            if(prod.getName().equals(productNaam))
-                product = prod;
-         return product;
-        }
-         
-    
-    
 
-    /*  @GetMapping(path = "/add")
+    public Product getProduct(String productNaam) {
+        List<Product> products = productRepository.findAll();
+        Product product = new Product();
+        for (Product prod : products) {
+            if (prod.getName().equals(productNaam)) {
+                product = prod;
+            }
+        }
+        return product;
+    }
+
+      @GetMapping(path = "/add")
     public @ResponseBody
     String addNewProduct(
             @RequestParam String name,
@@ -129,10 +144,6 @@ public class ProductController {
         return "Saved";
     }
 
-   @GetMapping(path="/all")
-    public @ResponseBody Iterable<Product> getAllProducts() {
-     return productRepository.findAll();
-    }
      /*
     @GetMapping
     public String products(Model model) {

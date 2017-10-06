@@ -49,7 +49,7 @@ public class Address {
     private String postalCode;
     @Column(name = "CITY")
     private String city;
-    @ManyToOne//(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
     @Enumerated(EnumType.ORDINAL)
@@ -58,29 +58,6 @@ public class Address {
     public Address() {
 
     }
-
-    /*public Address(String streetName, int number, String addition, String postalCode,
-            String city, Customer customer, AddressType addressType) {
-        this.streetName = streetName;
-        this.number = number;
-        this.addition = addition;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.customer = customer;
-        this.addressType = addressType;
-    }
-
-    public Address(Long id, String streetName, Integer number, String addition,
-            String postalCode, String city, Customer customer, AddressType addressType) {
-        this.id = id;
-        this.streetName = streetName;
-        this.number = number;
-        this.addition = addition;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.customer = customer;
-        this.addressType = addressType;
-    }*/
 
     public Long getId() {
         return id;

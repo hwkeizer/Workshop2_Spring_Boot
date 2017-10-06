@@ -37,19 +37,7 @@ public class Product {
     private BigDecimal price;
     @Column(name = "STOCK")
     private int stock;
-    @OneToOne
-    @JoinColumn(name = "OrderItem_ID")
-    private OrderItem orderItem;
-
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
-    }
-
-    public OrderItem getOrderItem() {
-        return orderItem;
-    }
-    // Default no-arg constructor will leave all member fields on their default
-    // except for the id field which will be invalidated to a negative value
+    
     public Product() {
 
     }

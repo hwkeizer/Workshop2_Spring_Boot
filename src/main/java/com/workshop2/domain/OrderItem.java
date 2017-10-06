@@ -37,7 +37,6 @@ public class OrderItem {
     @Column(name = "ID")
     private Long id;
     @OneToOne(mappedBy = "orderItem", fetch = FetchType.EAGER)
-    @JoinColumn(name = "PRODUCT_ID")
     private Product product;
     @Column(name = "AMOUNT")
     @NotNull(message="Voer het aantal van dit product in dat u wilt bestellen")
@@ -129,7 +128,7 @@ public class OrderItem {
         if (!Objects.equals(this.subTotal, other.subTotal)) {
             return false;
         }
-        return true;
+            return true;
     }
     
 }
