@@ -13,6 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Ahmed-Al-Alaaq(Egelantier)
  */
 public interface ProductRepository extends JpaRepository<Product, Long>{
-    
-    public Product findById(Long id);
+   
 }

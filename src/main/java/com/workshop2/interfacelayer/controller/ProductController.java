@@ -43,15 +43,16 @@ public class ProductController {
     private OrderController orderController;
 
     @GetMapping
-    public String Products(Model model) {
+    public String getProducts(Model model) {
 
         model.addAttribute("productList", productRepository.findAll());
         return "product/products";
     }
-    
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<Product> getAllProducts() {
-     return productRepository.findAll();
+
+    @GetMapping(path = "/all")
+    public @ResponseBody
+    Iterable<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     @GetMapping(path = "/add")
@@ -74,26 +75,28 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String ProductToDelete(@PathVariable long id, Model model) {
-        model.addAttribute(productRepository.findById(id));
+    public String findProductById(@PathVariable long id, Model model) {
+        model.addAttribute(productRepository.findOne(id));
         return "product/deleteProduct";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteProduct(Product product, BindingResult result, Model model) {
+    public String deleteProduct(@Valid Product product, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             return "product/deleteProduct";
         }
+
+        productRepository.delete(product);
         OrderItem orderItem = orderController.findOrderItem(product.getId());
         orderItem.setProduct(null);
-        productRepository.delete(product);
+        model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String ProductToUpdate(@PathVariable long id, Model model) {
-        model.addAttribute(productRepository.findById(id));
+        model.addAttribute(productRepository.findOne(id));
         return "product/updateProduct";
     }
 
@@ -105,6 +108,7 @@ public class ProductController {
         }
 
         productRepository.save(product);
+        model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
 

@@ -36,7 +36,8 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-    @OneToOne(mappedBy = "orderItem", fetch = FetchType.EAGER)
+    @OneToOne
+    @JoinColumn(name = "PRODUCT_ID")
     private Product product;
     @Column(name = "AMOUNT")
     @NotNull(message="Voer het aantal van dit product in dat u wilt bestellen")

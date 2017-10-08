@@ -148,7 +148,7 @@ public class OrderController {
         
         // get the product
         Long id = orderItem.getProduct().getId();
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findOne(id);
         orderItem.setProduct(product);
         
         // calculate and set subtotal

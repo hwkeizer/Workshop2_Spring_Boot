@@ -88,12 +88,16 @@ public class AddressController {
         if (result.hasErrors()) {
             return "address/deleteAddress";
         }
+
+        addressRepository.delete(address);
         Customer customer = customerRepository.findOne(address.getCustomer().getId());
         List<Address> addresses = customer.getAddressList();
-        for(Address adres: addresses)
-            if (adres.getPostalCode() == address.getPostalCode())
+        for (Address adres : addresses) {
+            if (adres.getPostalCode() == address.getPostalCode()) {
                 adres = null;
-        addressRepository.delete(address);
+            }
+        }
+        model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
     }
 
@@ -114,6 +118,7 @@ public class AddressController {
             return "address/updateAddress";
         }
         addressRepository.save(address);
+        model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
     }
 
