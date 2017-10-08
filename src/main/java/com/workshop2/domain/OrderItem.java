@@ -30,12 +30,8 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-<<<<<<< HEAD
     @OneToOne
     @JoinColumn(name = "PRODUCT_ID")
-=======
-    @OneToOne(fetch = FetchType.EAGER)
->>>>>>> 08165e678dedef1aac3b634788d7256fad671217
     private Product product;
     @Column(name = "AMOUNT")
     @NotNull(message="Voer het aantal van dit product in dat u wilt bestellen")
