@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -44,7 +45,7 @@ public class Order {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ORDER_STATUS")
     private OrderStatus orderStatus;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ORDER_ID")
     private List<OrderItem> orderItemList = new ArrayList<>();
     //@JoinColumn(name = "CUSTOMER_ID")

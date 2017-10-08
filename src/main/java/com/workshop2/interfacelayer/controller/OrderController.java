@@ -29,8 +29,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -173,7 +175,7 @@ public class OrderController {
     public String showOrdersAll(Model model) {
         
         model.addAttribute("orderList", orderRepository.findAll());
-        return "order/orders_all";
+        return "order/showorders_all";
     }
     
     @GetMapping(path="/orderstatus_new")
@@ -181,7 +183,7 @@ public class OrderController {
         List<Order> orderList = orderRepository.findByOrderStatus(NIEUW);
 
         model.addAttribute("orderList", orderList);
-        return "order/orders_new";
+        return "order/showorders_new";
     }
     
     @GetMapping(path="/orderstatus_inprogress")
@@ -189,7 +191,7 @@ public class OrderController {
         List<Order> orderList = orderRepository.findByOrderStatus(IN_BEHANDELING);
 
         model.addAttribute("orderList", orderList);
-        return "order/orders_inprogress";
+        return "order/showorders_inprogress";
     }
     
     @GetMapping(path="/orderstatus_finished")
@@ -197,15 +199,37 @@ public class OrderController {
         List<Order> orderList = orderRepository.findByOrderStatus(AFGEHANDELD);
         
         model.addAttribute("orderList", orderList);
-        return "order/orders_finished";
+        return "order/showorders_finished";
     }
     
-    @GetMapping(path="/show1order")
-    public String showOneOrder(Model model) {
-        List<Order> orderList = orderRepository.findAll();
-        Order order = orderList.get(0);
-        model.addAttribute("order", order);
-        return "order/show1order";
+    @GetMapping(value="/details/{id}")
+    public String showOrderDetails(@PathVariable Long id, Model model) {
+        Order order = orderRepository.findOne(id);
+        model.addAttribute(order); 
+        return "order/show1order_details";
+    }
+    
+    @GetMapping(value="/delete/{id}")
+    public String showDeleteOrder(@PathVariable Long id, Model model) {
+        Order order = orderRepository.findOne(id);
+        model.addAttribute(order);
+        model.addAttribute("orderId", order.getId());
+        if(order.getOrderStatus().equals(OrderStatus.AFGEHANDELD)) {
+            return "order/delete_order_cannotdelete";
+        }
+        else {
+            return "order/delete_order";
+        }
+    }
+    
+    @GetMapping(value="/deleteconfirm/{id}")
+    public String deleteOrderExecution(@PathVariable Long id, Model model) {
+        Order order = orderRepository.findOne(id);
+        updateProductStockAfterDeletingOrder(order.getOrderItemList());
+        orderRepository.delete(order);
+        
+        
+        return "redirect:/orders";
     }
     
     // Utility methods for managing lists and updating stock
