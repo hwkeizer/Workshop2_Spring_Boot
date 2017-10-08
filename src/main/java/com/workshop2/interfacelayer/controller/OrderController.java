@@ -202,11 +202,34 @@ public class OrderController {
         return "order/showorders_finished";
     }
     
-    @RequestMapping(value="/details/{id}", method=RequestMethod.GET)
+    @GetMapping(value="/details/{id}")
     public String showOrderDetails(@PathVariable Long id, Model model) {
         Order order = orderRepository.findOne(id);
         model.addAttribute(order); 
         return "order/show1order_details";
+    }
+    
+    @GetMapping(value="/delete/{id}")
+    public String showDeleteOrder(@PathVariable Long id, Model model) {
+        Order order = orderRepository.findOne(id);
+        model.addAttribute(order);
+        model.addAttribute("orderId", order.getId());
+        if(order.getOrderStatus().equals(OrderStatus.AFGEHANDELD)) {
+            return "order/delete_order_cannotdelete";
+        }
+        else {
+            return "order/delete_order";
+        }
+    }
+    
+    @GetMapping(value="/deleteconfirm/{id}")
+    public String deleteOrderExecution(@PathVariable Long id, Model model) {
+        Order order = orderRepository.findOne(id);
+        updateProductStockAfterDeletingOrder(order.getOrderItemList());
+        orderRepository.delete(order);
+        
+        
+        return "redirect:/orders";
     }
     
     // Utility methods for managing lists and updating stock

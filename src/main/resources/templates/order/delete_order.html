@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Verwijderen bestelling</h1>
+            
+            <h2 class="center">Bestelling</h2>
+            
+            <table id="orders" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Naam Klant</th>
+                        <th>Totaalprijs</th>
+                        <th>Datum</th>
+                        <th>Bestelstatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></td>
+                        <td th:text="${order.totalPrice}"></td>
+                        <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${order.orderStatus}"></td>
+                    </tr>
+                </tbody>            
+            </table>
+            <br/>
+            
+            <h3 class="center">Indien u kiest voor "verwijderen", dan wordt deze bestelling uit het systeem verwijderd.<br/>
+            De voorraad van de producten binnen deze bestelling zal automatisch bijgewerkt worden.</h3>
+            
+        </div>
+        <div id="content">  
+            <br/>
+            <a class="button center" th:href="@{'/orders/deleteconfirm/' + ${order.id}}">Verwijderen</a>
+            <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
+        </div>
+
+    </body>
+</html>
