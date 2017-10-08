@@ -6,7 +6,9 @@
   </head>
     <body>
         <div class="listTitle">
-        <h1 class="center"> Bestelling</h1>
+        <h1 class="center">Bestellingdetails</h1>
+        
+        <h2 class="center">Bestelling</h2>
         
         <table id="orders" class="table table-striped">
             <thead>
@@ -26,6 +28,7 @@
                 </tr>
             </tbody>            
         </table>
+        <br/>
         
         
         <h2 class="center">Bestelde producten</h2>
@@ -46,12 +49,27 @@
                 </tr>
             </tbody>            
         </table>
+        <br/>
+                <h2 class="center">Klantgegevens</h2>
+        
+        <table class="customers"> 
+            <thead>
+                <tr><th> </th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="firstcol">ID:</td><td th:text="${order.customer.id}"></td></tr>
+                <tr><td>Voornaam:</td><td th:text="${order.customer.firstName}"></td></tr>
+                <tr><td>Tussenvoegsel:</td><td th:text="${order.customer.lastNamePrefix}"></td></tr>
+                <tr><td>Achternaam:</td><td th:text="${order.customer.lastName}"></td></tr>
+            </tbody>            
+        </table>
       </div>
         
         <br/>
         <div id="content">  
             <br/>        
             <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
         </div>
     </body>
 </html>

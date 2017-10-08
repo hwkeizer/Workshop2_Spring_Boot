@@ -14,12 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -36,7 +30,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-    @OneToOne(mappedBy = "orderItem", fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private Product product;
     @Column(name = "AMOUNT")
     @NotNull(message="Voer het aantal van dit product in dat u wilt bestellen")
@@ -128,7 +122,7 @@ public class OrderItem {
         if (!Objects.equals(this.subTotal, other.subTotal)) {
             return false;
         }
-            return true;
+        return true;
     }
     
 }
