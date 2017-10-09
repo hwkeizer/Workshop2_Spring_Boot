@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Klant verwijderen</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <div id="content">
+      <h1 class="center">Klant verwijderen</h1>
+  
+        <table class="customers"> 
+            <thead>
+                <tr><th>Klant gegevens</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="firstcol">ID:</td><td th:text="${customer.id}"></td></tr>
+                <tr><td>Voornaam:</td><td th:text="${customer.firstName}"></td></tr>
+                <tr><td>Tussenvoegsel:</td><td th:text="${customer.lastNamePrefix}"></td></tr>
+                <tr><td>Achternaam:</td><td th:text="${customer.lastName}"></td></tr>
+            </tbody>            
+        </table>
+        <br/>
+        <table class="customers"> 
+            <thead>
+                <tr><th>Account gegevens</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="firstcol">ID:</td><td th:text="${customer.account != null} ? ${customer.account.id} : 'Geen account'"></td></tr>
+                <tr><td>Gebruikersnaam:</td><td th:text="${customer.account != null} ? ${customer.account.username} : ''"></td></tr>
+                <tr><td>Account type:</td><td th:text="${customer.account != null} ? ${customer.account.accountType} : ''"></td></tr>
+            </tbody>            
+        </table>
+        <br/>
+        <table class="customers"> 
+            <thead>
+                <tr><th>Postadres</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="firstcol">ID:</td><td th:text="${postadres != null} ? ${postadres.id} : 'Geen postadres'"></td></tr>
+                <tr><td>Straatnaam:</td><td th:text="${postadres != null} ? ${postadres.streetName} : ''"></td></tr>
+                <tr><td>Nummer:</td><td th:text="${postadres != null} ? ${postadres.number} : ''"></td></tr>
+                <tr><td>Toevoeging:</td><td th:text="${postadres != null} ? ${postadres.addition} : ''"></td></tr>
+                <tr><td>Plaatsnaam:</td><td th:text="${postadres != null} ? ${postadres.city} : ''"></td></tr>
+                <tr><td>Postcode:</td><td th:text="${postadres != null} ? ${postadres.postalCode} : ''"></td></tr>
+            </tbody>            
+        </table>
+        <br/>
+        <table class="customers"> 
+            <thead>
+                <tr><th>Bezorgadres</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="firstcol">ID:</td><td th:text="${bezorgadres != null} ? ${bezorgadres.id} : 'Geen bezorgadres'"></td></tr>
+                <tr><td>Straatnaam:</td><td th:text="${bezorgadres != null} ? ${bezorgadres.streetName} : ''"></td></tr>
+                <tr><td>Nummer:</td><td th:text="${bezorgadres != null} ? ${bezorgadres.number} : ''"></td></tr>
+                <tr><td>Toevoeging:</td><td th:text="${bezorgadres != null} ? ${bezorgadres.addition} : ''"></td></tr>
+                <tr><td>Plaatsnaam:</td><td th:text="${bezorgadres != null} ? ${bezorgadres.city} : ''"></td></tr>
+                <tr><td>Postcode:</td><td th:text="${bezorgadres != null} ? ${bezorgadres.postalCode} : ''"></td></tr>
+            </tbody>            
+        </table>
+        <br/>
+        <table class="customers"> 
+            <thead>
+                <tr><th>Factuuradres</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="firstcol">ID:</td><td th:text="${factuuradres != null} ? ${factuuradres.id} : 'Geen factuuradres'"></td></tr>
+                <tr><td>Straatnaam:</td><td th:text="${factuuradres != null} ? ${factuuradres.streetName} : ''"></td></tr>
+                <tr><td>Nummer:</td><td th:text="${factuuradres != null} ? ${factuuradres.number} : ''"></td></tr>
+                <tr><td>Toevoeging:</td><td th:text="${factuuradres != null} ? ${factuuradres.addition} : ''"></td></tr>
+                <tr><td>Plaatsnaam:</td><td th:text="${factuuradres != null} ? ${factuuradres.city} : ''"></td></tr>
+                <tr><td>Postcode:</td><td th:text="${factuuradres != null} ? ${factuuradres.postalCode} : ''"></td></tr>
+            </tbody>            
+        </table>
+        <br/>
+        <table class="customers"> 
+            <thead>
+                <tr><th>Orders</th><th></th><th></th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="order:${orderList}">
+                    <td th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></td>
+                    <td th:text="${order.totalPrice}"></td>
+                    <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${order.orderStatus}"></td>                    
+                </tr>
+            </tbody>            
+        </table>
+    <br/>
+    <h3 class="center">Indien u kiest voor "verwijderen", dan wordt deze klant uit het systeem verwijderd.<br/>
+        Hierbij wordt ook het bijbehorende account en de bijbehorende adressen verwijderd. <br/>
+        Eventuele orders behorend bij deze klant blijven bewaard maar zonder klantverwijzing. De status van deze <br/>
+        orders wordt, ongeacht de huidige status(!), op afgehandeld gezet</h3>
+    <br/>
+        <a class="button center" th:href="@{'/customers/deleteconfirm/' + ${customer.id}}">Verwijderen</a>
+        <a class="button center" th:href="@{/home}">Home</a>
+      <br/>
+      
+    </div>
+  </body>
+</html>
