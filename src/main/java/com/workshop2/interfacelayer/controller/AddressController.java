@@ -97,7 +97,6 @@ public class AddressController {
                 adres = null;
             }
         }
-        model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
     }
 
@@ -118,7 +117,6 @@ public class AddressController {
             return "address/updateAddress";
         }
         addressRepository.save(address);
-        model.addAttribute("addressList", addressRepository.findAll());
         return ("redirect:/addresses");
     }
 

@@ -108,7 +108,6 @@ public class ProductController {
         }
 
         productRepository.save(product);
-        model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
 
