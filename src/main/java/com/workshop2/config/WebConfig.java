@@ -16,10 +16,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class WebConfig  extends WebMvcConfigurerAdapter {
     
-    // Noodzakelijk om login en logout page te kunnen tonen!!!!
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/").setViewName("home");
+        registry.addViewController("/home").setViewName("home");
         registry.addViewController("/logout").setViewName("login");
     }
 }

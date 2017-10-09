@@ -101,6 +101,10 @@ public class Order {
         orderItemList.add(orderItem);
     }
     
+    public void removeFromOrderItemList(OrderItem orderItem) {
+        orderItemList.remove(orderItem);
+    }
+    
     public void setOrderItemList(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
     }

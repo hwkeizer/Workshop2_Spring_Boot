@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Aanpassen bestelling</h1>
+            
+            <h2 class="center">Bestelling</h2>
+            
+            <table id="orders" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Naam Klant</th>
+                        <th>Totaalprijs</th>
+                        <th>Datum</th>
+                        <th>Bestelstatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></td>
+                        <td th:text="${order.totalPrice}"></td>
+                        <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${order.orderStatus}"></td>
+                    </tr>
+                </tbody>            
+            </table>
+            <br/>
+            
+            <h2 class="center">Bestelde producten</h2>
+            
+            <table id="orders" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Productnaam</th>
+                        <th>Aantal</th>
+                        <th>Subtotaal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="orderItem:${order.orderItemList}">
+                        <td th:text="${orderItem.product.name}"></td>
+                        <td th:text="${orderItem.amount}"></td>
+                        <td th:text="${orderItem.subTotal}"></td>
+                        <td class="small">
+                            <a th:href="@{'/orders/delete_orderitem/' + ${orderItem.id}}"><img src="/../images/delete-icon.png" alt="delete"/></a>
+                        </td>
+                    </tr>
+                </tbody>            
+            </table>
+            <p class="center">Indien u de inhoud van een bestelregel wenst te veranderen, dan moet u deze bestelregel eerst verwijderen en vervolgens opnieuw toevoegen.</p>
+            </div>
+            <div id="content">  
+                <br/>
+                <a class="button center" th:href="@{/orders/add_orderitem_existing}">Product toevoegen</a>
+                <a class="button center" th:href="@{/orders/edit_orderstatus_new}">Bestelstatus wijzigen</a>
+                <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+                <a class="button center" th:href="@{/home}">Home</a>
+            </div>
+
+    </body>
+</html>

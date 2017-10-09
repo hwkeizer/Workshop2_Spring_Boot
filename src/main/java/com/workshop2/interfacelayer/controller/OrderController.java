@@ -46,8 +46,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class OrderController {
     
     @Scope(value = "session",proxyMode = ScopedProxyMode.TARGET_CLASS)
-    private class ScopedOrder extends Order {
-
+    public class ScopedOrder extends Order {
+        Long localId;
+        private void setLocalId(Long id){
+            this.localId = id;
+        }
+        
+        private Long getLocalId() {
+            return localId;
+        }
     }
     
     private ScopedOrder order;
@@ -213,7 +220,6 @@ public class OrderController {
     public String showDeleteOrder(@PathVariable Long id, Model model) {
         Order order = orderRepository.findOne(id);
         model.addAttribute(order);
-        model.addAttribute("orderId", order.getId());
         if(order.getOrderStatus().equals(OrderStatus.AFGEHANDELD)) {
             return "order/delete_order_cannotdelete";
         }
@@ -227,9 +233,146 @@ public class OrderController {
         Order order = orderRepository.findOne(id);
         updateProductStockAfterDeletingOrder(order.getOrderItemList());
         orderRepository.delete(order);
-        
-        
+
         return "redirect:/orders";
+    }
+    
+    @GetMapping(value="edit/{id}")
+    public String updateOrder(@PathVariable Long id, Model model) {
+        Order order1 = orderRepository.findOne(id);
+        order = new ScopedOrder();
+        order.setLocalId(order1.getId());
+        model.addAttribute(order1);
+        if(order1.getOrderStatus().equals(OrderStatus.NIEUW)) {
+            return "order/update_order_new";
+        }
+        else if(order1.getOrderStatus().equals(OrderStatus.IN_BEHANDELING)) {
+            return "order/update_order_inprogress";
+        }
+        else {
+            return "order/update_order_finished";
+        }
+    }
+    
+    @GetMapping(value="/edit_orderstatus_new")
+    public String updateOrderStatusNew(Model model) {
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        model.addAttribute("order", order1);
+        return "order/update_orderstatus_new";
+    }
+    
+    @GetMapping(value="/edit_orderstatus_inprogress")
+    public String updateOrderStatusInProgress(Model model) {
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        model.addAttribute("order", order1);
+        return "order/update_orderstatus_inprogress";
+    }
+    
+    @GetMapping(value="/update_orderstatus")
+    public String updateOrderStatusExecution(Model model) {
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        if(order1.getOrderStatus().equals(NIEUW)) {
+            order1.setOrderStatus(IN_BEHANDELING);
+        }
+        else {
+            order1.setOrderStatus(AFGEHANDELD);
+        }
+        orderRepository.save(order1);
+        return "redirect:/orders/edit/"+ order.getLocalId();
+    }
+    
+    @GetMapping(value="delete_orderitem/{id}")
+    public String showDeleteOrderItem(@PathVariable Long id, Model model) {
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        model.addAttribute("order", order1);
+        if(order1.getOrderItemList().size() <= 1) {
+            return "order/delete_orderitem_notallowed";
+        }
+        
+        model.addAttribute(orderItemRepository.findOne(id));
+        return "order/delete_orderitem";
+    }
+    
+    @GetMapping(value="/delete_orderitem_confirm/{id}")
+    public String deleteOrderItemExecution(@PathVariable Long id, Model model) {
+                
+        // delete the orderItem and update product stock
+        OrderItem orderItem = orderItemRepository.findOne(id);
+        updateProductStockAfterDeletingOrderItem(orderItem);
+        orderItemRepository.delete(orderItem);
+        
+        // update order price
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        order1.setTotalPrice(calculateOrderPrice(order1.getOrderItemList()));
+        orderRepository.save(order1);
+        
+        System.out.println("RETURN TO ORDER PAGE REACHED");
+        return "redirect:/orders/edit/"+ order.getLocalId();
+    }
+    
+    @GetMapping(value="/add_orderitem_existing")
+    public String addNewOrderItemToExistingOrder(Model model) {        
+        List<Product> productList = productRepository.findAll();
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        cleanProductList(productList, order1.getOrderItemList());
+        
+        // Only send products which have not yet been chosen
+        if(productList.size() != 0) {
+            model.addAttribute(new OrderItem());
+            model.addAttribute("productList", productList);
+
+            return "order/addNewOrderItem_existing";
+        }
+        else {
+            return "order/addNewOrderItem_existing_noMoreProducts";
+        }
+    }
+    
+    @PostMapping(path="/addorderitem_existing")
+    public String addNewOrderItemToExistingOrder(@Valid OrderItem orderItem, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            List<Product> productList = productRepository.findAll();
+        
+            // Only send products which have not yet been chosen
+            cleanProductList(productList, order.getOrderItemList());
+            model.addAttribute(new OrderItem());
+            model.addAttribute("productList", productList);
+
+            return "order/addNewOrderItem";
+        }
+        if(orderItem.getAmount() == 0) {
+            return ("redirect:/orders/edit/" + order.getLocalId());
+        }
+        
+        Order order1 = orderRepository.findOne(order.getLocalId());
+        
+        // get the product
+        Long id = orderItem.getProduct().getId();
+        Product product = productRepository.findOne(id);
+        orderItem.setProduct(product);
+        
+        // calculate and set subtotal
+        BigDecimal subTotal = product.getPrice().multiply(new BigDecimal(orderItem.getAmount()));
+        orderItem.setSubTotal(subTotal);
+        
+        // add the orderItem to the Order
+        order1.addToOrderItemList(orderItem);
+        
+        // update the product stock
+        updateProductStockAfterAddingOrderItem(orderItem);
+        
+        // set totalPrice
+        order1.setTotalPrice(calculateOrderPrice(order1.getOrderItemList()));
+        
+        // save order
+        orderRepository.save(order1);
+
+        return("redirect:/orders/edit/" + order.getLocalId());
+    }
+    
+    @GetMapping(value="/return_to_edit_order")
+    public String cannotAddMoreOrderItems() {
+        return ("redirect:/orders/edit/" + order.getLocalId());
     }
     
     // Utility methods for managing lists and updating stock
@@ -250,7 +393,7 @@ public class OrderController {
                 productList.remove(product);
         }
     }
-    
+ 
     protected void updateProductStockAfterCreatingOrder(List<OrderItem> orderItemList) {
         
         for(OrderItem orderItem: orderItemList) {
@@ -277,6 +420,7 @@ public class OrderController {
         }
     }
     
+<<<<<<< HEAD
      public List<OrderItem> findOrderItems(Long productId) {
          List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItem item :orderItemRepository.findAll()){
@@ -295,4 +439,34 @@ public class OrderController {
      }
              
     
+=======
+    protected void updateProductStockAfterDeletingOrderItem(OrderItem orderItem) {
+
+        Product product = orderItem.getProduct();
+
+        int amount = orderItem.getAmount();
+        int oldStock = product.getStock();
+        product.setStock(oldStock + amount);
+
+        productRepository.save(product);
+    }
+    
+    protected void updateProductStockAfterAddingOrderItem(OrderItem orderItem) {
+
+        Product product = orderItem.getProduct();
+
+        int amount = orderItem.getAmount();
+        int oldStock = product.getStock();
+        product.setStock(oldStock - amount);
+
+        productRepository.save(product);
+    }
+    
+     public OrderItem findOrderItem(Long productId) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProduct(productRepository.findOne(productId));
+        Example<OrderItem> example = Example.of(orderItem);
+        return orderItemRepository.findOne(example);        
+    }
+>>>>>>> 3096c1c14c1bc44292b2cd70a9fb8edec83dd03c
 }
