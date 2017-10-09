@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Delete address</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1>Als u deze address wilt verwijderen</h1><br/>
+            <h2>Druk dan op delete knop ... </h2>
+
+            <form method="POST" th:action="@{/addresses/delete}" th:object="${address}" >
+               
+                    <label>AddressID</label>:
+                    <input type="number" th:field="*{id}" readonly='readonly' /><br/> <br/>        
+
+                    <label>StreetName</label>:                 
+                    <input type="text" th:field="*{streetName}" readonly='readonly' /><br/><br/>
+
+                    <label>Number</label>:
+                    <input type="number" th:field="*{number}" readonly='readonly' /><br/><br/>
+
+                    <label>Addition</label>:                 
+                    <input type="text" th:field="*{addition}" readonly='readonly' /><br/><br/>
+
+                    <label>PostalCode</label>:                 
+                    <input type="text" th:field="*{postalCode}" readonly='readonly' 
+                           pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}"/><br/><br>
+
+                        <label>City</label>:                 
+                        <input type="text" th:field="*{city}" readonly='readonly' /><br/><br/>    
+
+                        <label>CustomerId</label>:
+                        <input readonly='readonly' type="number" th:field="*{customer.id}"/><br/> <br/>
+
+                        <label>AddressType</label>: 
+                        <input type="text" th:field="*{addressType}" readonly='readonly' /><br/><br/>
+              
+                <input  type="submit" value="delete" />  
+
+            </form>
+        </div>
+    </body>
+</html>
+
