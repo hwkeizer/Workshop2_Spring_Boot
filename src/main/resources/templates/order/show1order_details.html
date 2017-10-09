@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></td>
+                    <td th:text="${order.customer != null} ? ${order.customer.firstName + ' ' + order.customer.lastName} : 'Klant is verwijderd'"></td>
                     <td th:text="${order.totalPrice}"></td>
                     <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${order.orderStatus}"></td>
@@ -57,10 +57,10 @@
                 <tr><th> </th><th></th></tr>
             </thead>
             <tbody>
-                <tr><td class="firstcol">ID:</td><td th:text="${order.customer.id}"></td></tr>
-                <tr><td>Voornaam:</td><td th:text="${order.customer.firstName}"></td></tr>
-                <tr><td>Tussenvoegsel:</td><td th:text="${order.customer.lastNamePrefix}"></td></tr>
-                <tr><td>Achternaam:</td><td th:text="${order.customer.lastName}"></td></tr>
+                <tr><td class="firstcol">ID:</td><td th:text="${order.customer != null} ? ${order.customer.id} : 'Klant is verwijderd'"></td></tr>
+                <tr><td>Voornaam:</td><td th:text="${order.customer != null} ? ${order.customer.firstName} : ''"></td></tr>
+                <tr><td>Tussenvoegsel:</td><td th:text="${order.customer != null} ? ${order.customer.lastNamePrefix} : ''"></td></tr>
+                <tr><td>Achternaam:</td><td th:text="${order.customer != null} ? ${order.customer.lastName} : ''"></td></tr>
             </tbody>            
         </table>
       </div>

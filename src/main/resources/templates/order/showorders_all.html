@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 <tr th:each="order:${orderList}">
-                    <td th:text="${order.customer.firstName + ' ' + order.customer.lastName}"></td>
+                    <td th:text="${order.customer != null} ? ${order.customer.firstName + ' ' + order.customer.lastName} : 'Klant is verwijderd'"></td>
                     <td th:text="${order.totalPrice}"></td>
                     <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${order.orderStatus}"></td>

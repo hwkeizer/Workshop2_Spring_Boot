@@ -5,10 +5,14 @@
  */
 package com.workshop2.interfacelayer.controller;
 
+import com.workshop2.domain.Account;
 import com.workshop2.domain.Address;
 import com.workshop2.domain.Address.AddressType;
 import com.workshop2.domain.Customer;
+import com.workshop2.domain.Order;
+import com.workshop2.domain.OrderStatus;
 import com.workshop2.interfacelayer.repository.AccountRepository;
+import com.workshop2.interfacelayer.repository.AddressRepository;
 import com.workshop2.interfacelayer.repository.CustomerRepository;
 import java.util.List;
 import javax.validation.Valid;
@@ -37,6 +41,8 @@ public class CustomerController {
     private CustomerRepository customerRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AddressRepository addressRepository;
     @Autowired
     private AccountController accountController;
     
@@ -75,18 +81,52 @@ public class CustomerController {
     
     @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
     public String showDeleteCustomer(@PathVariable Long id, Model model) {
-        model.addAttribute(customerRepository.findOne(id));
-        return "customer/deleteCustomerForm";
+        Customer customer = customerRepository.findOne(id);
+        List<Address> addressList = customer.getAddressList();
+        for (Address address : addressList) {
+            switch (address.getAddressType()) {
+                case POSTADRES: model.addAttribute("postadres", address); break;
+                case BEZORGADRES: model.addAttribute("bezorgadres", address); break;
+                case FACTUURADRES: model.addAttribute("factuuradres", address); break;
+            }
+        }
+        model.addAttribute("orderList", customer.getOrderList());
+        model.addAttribute(customer);
+        return "customer/delete_customer";
     }
     
-    @RequestMapping(value="/delete", method=RequestMethod.POST)
-    public String deleteCustomer(Customer customer, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "customer/deleteCustomerForm";
+    @GetMapping(value="/deleteconfirm/{id}")
+    public String deleteCustomerExecution(@PathVariable Long id, Model model) {
+        Customer customer = customerRepository.findOne(id);
+        
+        Account account = customer.getAccount();
+        
+        // Set customer property from orders from this customer to null
+        for (Order order : customer.getOrderList()) {
+            order.setCustomer(null);
+            order.setOrderStatus(OrderStatus.AFGEHANDELD);
         }
+        
+        // Delete addresses from this customer
+        for (Address address : customer.getAddressList()) {
+            addressRepository.delete(address);
+        }
+        
         customerRepository.delete(customer);
+        accountRepository.delete(account);
+        
         return "redirect:/customers";
+        
     }
+    
+//    @RequestMapping(value="/delete", method=RequestMethod.POST)
+//    public String deleteCustomer(Customer customer, BindingResult bindingResult, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            return "customer/deleteCustomerForm";
+//        }
+//        customerRepository.delete(customer);
+//        return "redirect:/customers";
+//    }
     
     @RequestMapping(value="/details/{id}", method=RequestMethod.GET)
     public String showCustomerDetails(@PathVariable Long id, Model model) {
