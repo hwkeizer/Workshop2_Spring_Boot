@@ -43,6 +43,8 @@ public class AddressController {
     private AddressRepository addressRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerController customerController;
 
     @GetMapping
     public String Addresses(Model model) {
@@ -50,10 +52,6 @@ public class AddressController {
         return "address/addresses";
     }
 
-    /*@GetMapping(path = "/all")
-    public @ResponseBody Iterable<Address> getAllAddresses() {
-        return addressRepository.findAll();
-    }*/
     @GetMapping(path = "/add")
     public String addAddress(Model model) {
         List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
@@ -83,20 +81,8 @@ public class AddressController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteAddress(Address address, BindingResult result, Model model) {
-
-        if (result.hasErrors()) {
-            return "address/deleteAddress";
-        }
-
+    public String deleteAddress(@Valid Address address, Model model) {
         addressRepository.delete(address);
-        Customer customer = customerRepository.findOne(address.getCustomer().getId());
-        List<Address> addresses = customer.getAddressList();
-        for (Address adres : addresses) {
-            if (adres.getPostalCode() == address.getPostalCode()) {
-                adres = null;
-            }
-        }
         return ("redirect:/addresses");
     }
 

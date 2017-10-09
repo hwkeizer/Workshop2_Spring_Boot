@@ -277,10 +277,22 @@ public class OrderController {
         }
     }
     
-     public OrderItem findOrderItem(Long productId) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(productRepository.findOne(productId));
-        Example<OrderItem> example = Example.of(orderItem);
-        return orderItemRepository.findOne(example);        
-    }
+     public List<OrderItem> findOrderItems(Long productId) {
+         List<OrderItem> orderItems = new ArrayList<>();
+        for (OrderItem item :orderItemRepository.findAll()){
+        if (item.getProduct().getId().equals(productId))
+        orderItems.add(item);
+        }
+        return orderItems;
+     }
+     
+     public boolean isFound(Long productId){
+         for (OrderItem item :orderItemRepository.findAll()){
+              if (item.getProduct().getId().equals(productId))
+                  return true;
+         }
+         return false;
+     }
+             
+    
 }

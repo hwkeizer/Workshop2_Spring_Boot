@@ -12,9 +12,8 @@ and open the template in the editor.
   </head>
   <body>
     <div id="content">
-      <h1> Het wijzigen van een product</h1>
-  
-      <form method="POST" th:action="@{/product/update}" th:object="${product}" >
+        <h1> Het wijzigen van een product</h1>
+      <form method="POST" th:action="@{/products/update}" th:object="${product}" >
         
             <label>ProductID</label> 
                 <input readonly='readonly' type="number" th:field="*{id}" /><br/><br/>

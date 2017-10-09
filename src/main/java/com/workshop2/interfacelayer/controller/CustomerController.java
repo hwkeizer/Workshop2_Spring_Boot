@@ -34,9 +34,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author hwkei
  */
 @Controller
-@RequestMapping(path="/customers")
+@RequestMapping(path = "/customers")
 public class CustomerController {
-    
+
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
@@ -45,14 +45,14 @@ public class CustomerController {
     private AddressRepository addressRepository;
     @Autowired
     private AccountController accountController;
-    
-    @GetMapping(path="/add")
+
+    @GetMapping(path = "/add")
     public String showaddAccountForm(Model model) {
-        model.addAttribute(new Customer());        
+        model.addAttribute(new Customer());
         return "customer/addCustomerForm";
     }
-    
-    @PostMapping(path="/add")
+
+    @PostMapping(path = "/add")
     public String addCustomer(@Valid Customer customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "customer/addCustomerForm";
@@ -61,16 +61,16 @@ public class CustomerController {
         customer.setAccount(accountController.createAccountForNewCustomer(customer.getFirstName(),
                 customer.getLastName()));
         System.out.println(customerRepository.save(customer));
-        return("redirect:/customers");
+        return ("redirect:/customers");
     }
-    
-    @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String showEditCustomer(@PathVariable Long id, Model model) {
         model.addAttribute(customerRepository.findOne(id));
         return "customer/editCustomerForm";
     }
-    
-    @RequestMapping(value="/edit", method=RequestMethod.POST)
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String editCustomer(Customer customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "customer/editCustomerForm";
@@ -78,47 +78,53 @@ public class CustomerController {
         customerRepository.save(customer);
         return "redirect:/customers";
     }
-    
-    @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String showDeleteCustomer(@PathVariable Long id, Model model) {
         Customer customer = customerRepository.findOne(id);
         List<Address> addressList = customer.getAddressList();
         for (Address address : addressList) {
             switch (address.getAddressType()) {
-                case POSTADRES: model.addAttribute("postadres", address); break;
-                case BEZORGADRES: model.addAttribute("bezorgadres", address); break;
-                case FACTUURADRES: model.addAttribute("factuuradres", address); break;
+                case POSTADRES:
+                    model.addAttribute("postadres", address);
+                    break;
+                case BEZORGADRES:
+                    model.addAttribute("bezorgadres", address);
+                    break;
+                case FACTUURADRES:
+                    model.addAttribute("factuuradres", address);
+                    break;
             }
         }
         model.addAttribute("orderList", customer.getOrderList());
         model.addAttribute(customer);
         return "customer/delete_customer";
     }
-    
-    @GetMapping(value="/deleteconfirm/{id}")
+
+    @GetMapping(value = "/deleteconfirm/{id}")
     public String deleteCustomerExecution(@PathVariable Long id, Model model) {
         Customer customer = customerRepository.findOne(id);
-        
+
         Account account = customer.getAccount();
-        
+
         // Set customer property from orders from this customer to null
         for (Order order : customer.getOrderList()) {
             order.setCustomer(null);
             order.setOrderStatus(OrderStatus.AFGEHANDELD);
         }
-        
+
         // Delete addresses from this customer
         for (Address address : customer.getAddressList()) {
             addressRepository.delete(address);
         }
-        
+
         customerRepository.delete(customer);
         accountRepository.delete(account);
-        
+
         return "redirect:/customers";
-        
+
     }
-    
+
 //    @RequestMapping(value="/delete", method=RequestMethod.POST)
 //    public String deleteCustomer(Customer customer, BindingResult bindingResult, Model model) {
 //        if (bindingResult.hasErrors()) {
@@ -127,39 +133,44 @@ public class CustomerController {
 //        customerRepository.delete(customer);
 //        return "redirect:/customers";
 //    }
-    
-    @RequestMapping(value="/details/{id}", method=RequestMethod.GET)
+    @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String showCustomerDetails(@PathVariable Long id, Model model) {
         Customer customer = customerRepository.findOne(id);
         List<Address> addressList = customer.getAddressList();
         for (Address address : addressList) {
             switch (address.getAddressType()) {
-                case POSTADRES: model.addAttribute("postadres", address); break;
-                case BEZORGADRES: model.addAttribute("bezorgadres", address); break;
-                case FACTUURADRES: model.addAttribute("factuuradres", address); break;
+                case POSTADRES:
+                    model.addAttribute("postadres", address);
+                    break;
+                case BEZORGADRES:
+                    model.addAttribute("bezorgadres", address);
+                    break;
+                case FACTUURADRES:
+                    model.addAttribute("factuuradres", address);
+                    break;
             }
         }
-        model.addAttribute(customer); 
+        model.addAttribute(customer);
         return "customer/details";
     }
-    
-    
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<Customer> getAllCustomers() {
+
+    @GetMapping(path = "/all")
+    public @ResponseBody
+    Iterable<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
-    
+
     @GetMapping
-    public String customers(Model model) {        
+    public String customers(Model model) {
         model.addAttribute("customerList", customerRepository.findAll());
         return "customer/customers";
     }
-    
+
     public List<Customer> findCustomerByAccountId(Long accountId) {
         Customer customer = new Customer();
         customer.setAccount(accountRepository.findOne(accountId));
         Example<Customer> example = Example.of(customer);
-        return customerRepository.findAll(example);        
+        return customerRepository.findAll(example);
     }
-    
+
 }

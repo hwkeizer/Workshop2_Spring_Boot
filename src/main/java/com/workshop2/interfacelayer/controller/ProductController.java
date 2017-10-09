@@ -41,6 +41,8 @@ public class ProductController {
     private ProductRepository productRepository;
     @Autowired
     private OrderController orderController;
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     @GetMapping
     public String getProducts(Model model) {
@@ -81,15 +83,17 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteProduct(@Valid Product product, BindingResult result, Model model) {
+    public String deleteProduct(@Valid Product product, Model model) {
 
-        if (result.hasErrors()) {
-            return "product/deleteProduct";
+        if (orderController.isFound(product.getId())) {
+            for (OrderItem item : orderController.findOrderItems(product.getId())) {
+                item.setProduct(null);
+                orderItemRepository.delete(item);
+            }
+
         }
 
         productRepository.delete(product);
-        OrderItem orderItem = orderController.findOrderItem(product.getId());
-        orderItem.setProduct(null);
         model.addAttribute("productList", productRepository.findAll());
         return ("redirect:/products");
     }
