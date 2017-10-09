@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Applikaasie</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <h1 class="center">Toevoegen nieuwe bestelregel</h1>
+        
+        <h2 class="center">Alle mogelijke producten zijn reeds toegevoegd.</h2>
+        <h2 class="center">Bestelregel toevoegen is niet meer mogelijk</h2>
+        
+        <div id="content">  
+            <br/>        
+
+            <a class="button center" th:href="@{/orders/return_to_edit_order}">Terug naar aanpassen bestelling</a>
+            <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
+        </div>
+    </body>
+</html>
+

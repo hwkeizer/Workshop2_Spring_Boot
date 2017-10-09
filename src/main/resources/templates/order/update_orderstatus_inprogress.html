@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Aanpassen bestelstatus</h1>
+            
+            <h2 class="center">U gaat nu de status van de bestelling aanpassen.<br/>
+                De huidige bestelstatus: IN_BEHANDELING.<br/>
+                De nieuwe bestelstatus zal worden: AFGEHANDELD.<br/><br/>
+                Let op! Als u klikt op "Wijziging doorvoeren" dan zal de bestelstatus aangepast worden.<br/>
+                Dit kan niet meer teruggedraaid worden!</h2>
+            
+            </div>
+            <div id="content">  
+                <br/>
+                <a class="button center" th:href="@{/orders/update_orderstatus}">Wijziging doorvoeren</a>
+                <a class="button center" th:href="@{'/orders/edit/' + ${order.id}}">Terug naar aanpassen bestelling</a>
+                <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+                <a class="button center" th:href="@{/home}">Home</a>
+            </div>
+
+    </body>
+</html>

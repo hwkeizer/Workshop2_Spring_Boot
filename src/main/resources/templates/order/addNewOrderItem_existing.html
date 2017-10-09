@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Toevoegen nieuwe bestelregel</h1>
+            <h2 class="center">Beschikbare producten</h2>
+            
+            <table id="productList" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Prijs per stuk</th>
+                        <th>Voorraad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product:${productList}">
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.stock}"></td>
+                    </tr>
+                </tbody>            
+            </table>
+            <br/><br/>
+            
+            <form class="center" method="POST" th:action="@{/orders/addorderitem_existing}" th:object="${orderItem}"  >
+               <div class="errors" th:if="${#fields.hasErrors('*')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('*')}" 
+                            th:text="${err}">Veld onjuist ingevuld</li>
+                    </ul>
+                </div>
+                
+                <label><b>Product</b></label>: 
+                <select id="productList" th:field="*{product.id}">
+                    <option th:each="product : ${productList}"
+                                     th:value="${product.id}"
+                                     th:text="${product.name}"
+                                     />
+                </select><br/><br/>
+                
+                <label th:class="${#fields.hasErrors('amount')}? 'error'"><b>Aantal*</b></label>: 
+                <input type="number" min="0" th:field="*{amount}" required="required"
+                       th:class="${#fields.hasErrors('amount')}? 'error'" /><br/><br/>
+                <h3 class="center">Indien u kiest voor "Toevoegen", dan wordt dit product direct aan de bestelling toegevoegd.<br/>
+                De voorraad van dit product zal automatisch bijgewerkt worden.</h3>
+                <br/>
+                <input type="submit" value="Toevoegen" />
+                
+
+            </form>
+            <p class="center"><i>* Bij aantal = 0 keert u terug naar het scherm waarin u de bestelling kan aanpassen.</i></p>
+            
+        </div>
+    </body>
+</html>

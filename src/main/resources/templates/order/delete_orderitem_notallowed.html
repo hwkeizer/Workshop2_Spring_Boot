@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Verwijderen bestelregel</h1>
+            <h2 class="center">Een bestelling moet minimaal één product bevatten, dus deze bestelregel kan niet verwijderd worden.<br/>
+            Als u deze bestelregel wenst te verwijderen, dan dient u eerst een ander product aan de bestelling toe te voegen.</h2>
+            
+        </div>   
+        
+        <br/>
+        <div id="content">  
+            <br/>
+            <a class="button center" th:href="@{'/orders/edit/' + ${order.id}}">Terug naar aanpassen bestelling</a>
+            <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
+        </div>
+    </body>
+</html>
