@@ -9,12 +9,12 @@
         <h1 class="center">Menu bestellingen</h1>
 
         <br/>
-        <div id="content">  
-            <a class="button center" th:href="@{/orders/all_orders}">Alle bestellingen</a>
-            <a class="button center" th:href="@{/orders/orderstatus_new}">Bestelstatus: nieuw</a>
-            <a class="button center" th:href="@{/orders/orderstatus_inprogress}">Bestelstatus: in behandeling</a>
-            <a class="button center" th:href="@{/orders/orderstatus_finished}">Bestelstatus: afgehandeld</a>
+        <div id="content">
             <a class="button center" th:href="@{/orders/startaddneworder}">Nieuwe bestelling plaatsen</a>
+            <a class="button center" th:href="@{/orders/all_orders}">Toon bestellingen:<br/>alles</a>
+            <a class="button center" th:href="@{/orders/orderstatus_new}">Toon bestellingen:<br/>nieuw</a>
+            <a class="button center" th:href="@{/orders/orderstatus_inprogress}">Toon bestellingen:<br/>in behandeling</a>
+            <a class="button center" th:href="@{/orders/orderstatus_finished}">Toon bestellingen:<br/>afgehandeld</a>            
             <a class="button center" th:href="@{/}">Terug naar home</a>
         </div>
     </body>

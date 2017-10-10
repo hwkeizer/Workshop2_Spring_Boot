@@ -37,27 +37,12 @@ and open the template in the editor.
             </table>
             <br/><br/>
             
-           <!-- <form class="center" method="POST" th:action="@{/orders/addorder_selectcustomer}" th:object="${orderItem}"  >
-               <div class="errors" th:if="${#fields.hasErrors('*')}">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('*')}" 
-                            th:text="${err}">Veld onjuist ingevuld</li>
-                    </ul>
-                </div>
-                
-                <label><b>Product</b></label>: 
-                <select id="productList" th:field="*{customer.id}">
-                    <option th:each="customer : ${customerList}"
-                                     th:value="${customer.id}"
-                                     th:text="${customer.firstname + ' ' + customer.lastNamePrefix + ' ' + customer.lastName}"
-                                     />
-                </select><br/><br/>
-                
-                <input type="submit" value="Toevoegen" />
-
-            </form>
-            <p class="center"><i>* Bij aantal = 0 keert u terug naar het overzicht van uw bestelling</i></p>
-            -->
+            <div id="content">  
+            <br/>
+            <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
+            </div>
+            
         </div>
     </body>
 </html>
