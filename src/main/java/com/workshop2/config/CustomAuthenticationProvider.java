@@ -34,7 +34,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         
         if (accountController.validateAccount(name, password)) {
             List<SimpleGrantedAuthority> roles = new ArrayList<>();
-            roles.add(new SimpleGrantedAuthority(accountController.getUserRole(name).toString()));            
+            roles.add(new SimpleGrantedAuthority(accountController.getUserRole(name).toString()));
+            System.out.println("ROLES: " + roles);
             return new UsernamePasswordAuthenticationToken(name, password, roles);
         } else {
             return null;
