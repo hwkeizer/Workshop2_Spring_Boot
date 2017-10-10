@@ -7,7 +7,24 @@
     </head>
     <body>
         <h1 class="center">Bestelling plaatsen</h1>
-        <br/>
+        <br/><h2 class="center">Klant</h2>
+            
+            <table id="productList" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Achternaam</th>
+                        <th>Voornaam</th>
+                        <th>Accountnaam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${order.customer.lastName}"></td>
+                        <td th:text="${order.customer.firstName + ' ' + order.customer.lastNamePrefix}"></td>
+                        <td th:text="${order.customer.account != null} ? ${order.customer.account.username} : 'Geen account'"></td>
+                    </tr>
+                </tbody>            
+            </table>
         <h2 class="center">Bestelde producten</h2>
         
         <table id="orderItems" class="table table-striped">
