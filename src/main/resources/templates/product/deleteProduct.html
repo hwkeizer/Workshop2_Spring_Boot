@@ -29,7 +29,8 @@ and open the template in the editor.
                 <label>Nr.Stock</label>: 
                 <input type="number" th:field="*{stock}" readonly='readonly'/><br/><br/>
 
-                <input  type="submit" value="delete" />       
+                <input  type="submit" value="delete" />   
+                 <a class="button center" th:href="@{/products}">Naar Productoverzicht</a>
             </form>
         </div>
     </body>

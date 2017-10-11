@@ -7,42 +7,42 @@ and open the template in the editor.
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Products</title> 
-    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
-  </head>
-    <body>
+    <head>
+        <title>Products</title> 
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body  style = "background: url(../images/vlag.jpg); background-size: 100%;"> 
         <div class="listTitle">
-        <h1 class="center">Productoverzicht</h1>
-        
-        <table id="products" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ProductName</th>
-                    <th>ProductPrice</th>
-                    <th>Nr.Stock</th>
-                     <th></th>
-                     <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="product:${productList}">
-                    <td th:text="${product.name}"></td>
-                    <td th:text="${product.price}"></td>
-                    <td th:text="${product.stock}"></td>
-                    <td class="small"> 
-                        <a th:href="@{'/products/update/' + ${product.id}}"><input type="submit" value="update"/></a>
-                    </td>
-                    <td class="small"> 
-                        <a th:href="@{'/products/delete/' + ${product.id}}"><input type="submit" value="delete"/></a>
-                    </td>
-                    
-                </tr>
-            </tbody>            
-        </table>
-        <br/>
-         <a class="button center" th:href="@{/products/add}">Nieuwe product toevoegen</a>
-         <a class="button center" th:href="@{/home}">Naar home pagina terug!</a>
-      </div> 
+            <h1 class="center">Productoverzicht</h1>
+
+            <table id="products" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style=" font-size: 25px">ProductName</th>
+                        <th style=" font-size: 25px">ProductPrice</th>
+                        <th style=" font-size: 25px">Nr.Stock</th>
+                        <th style=" font-size: 25px"></th>
+                        <th style=" font-size: 25px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product:${productList}">
+                        <td  style=" font-size: 20px" th:text="${product.name}"></td>
+                        <td  style=" font-size: 20px" th:text="${product.price}"></td>
+                        <td  style=" font-size: 20px" th:text="${product.stock}"></td>
+                        <td class="small"> 
+                            <a th:href="@{'/products/update/' + ${product.id}}"><input type="submit" value="update"/></a>
+                        </td>
+                        <td class="small"> 
+                            <a th:href="@{'/products/delete/' + ${product.id}}"><input type="submit" value="delete"/></a>
+                        </td>
+
+                    </tr>
+                </tbody>            
+            </table>
+            <br/>
+            <a class="button center" th:href="@{/products/add}">Nieuwe product toevoegen</a>
+            <a class="button center" th:href="@{/home}">Naar home pagina terug!</a>
+        </div> 
     </body>
 </html>

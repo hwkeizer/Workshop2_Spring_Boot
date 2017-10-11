@@ -6,25 +6,26 @@ and open the template in the editor.
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Product updating</title>
+    <head>
+        <title>Product updating</title>
         <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
-  </head>
-  <body>
-    <div id="content">
-        <h1> Het wijzigen van een product</h1>
-      <form method="POST" th:action="@{/products/update}" th:object="${product}" >
-        
-            <label>ProductID</label> 
+    </head>
+    <body>
+        <div id="content">
+            <h1> Het wijzigen van een product</h1>
+            <form method="POST" th:action="@{/products/update}" th:object="${product}" >
+
+                <label>ProductID</label> 
                 <input readonly='readonly' type="number" th:field="*{id}" /><br/><br/>
-            <label>ProductNaam</label> 
+                <label>ProductNaam</label> 
                 <input type="text" th:field="*{name}" /><br/><br/>
-            <label>ProductPrice</label> 
+                <label>ProductPrice</label> 
                 <input type="text" th:field="*{price}" pattern="\d{2}.?\d{2}" /><br/><br/>
-            <label>Nr.Stock</label>
-                 <input type="number" th:field="*{stock}" /><br/><br/>
-        <input type="submit" value="Wijzigen" />
-      </form>
-    </div>
-  </body>
+                <label>Nr.Stock</label>
+                <input type="number" th:field="*{stock}" /><br/><br/>
+                <input type="submit" value="Wijzigen" />
+                <a class="button center" th:href="@{/products}">Naar Productoverzicht</a>
+            </form>
+        </div>
+    </body>
 </html>

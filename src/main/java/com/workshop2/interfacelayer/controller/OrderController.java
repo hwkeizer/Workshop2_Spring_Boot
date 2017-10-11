@@ -420,7 +420,7 @@ public class OrderController {
         }
     }
     
-<<<<<<< HEAD
+
      public List<OrderItem> findOrderItems(Long productId) {
          List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItem item :orderItemRepository.findAll()){
@@ -439,7 +439,7 @@ public class OrderController {
      }
              
     
-=======
+
     protected void updateProductStockAfterDeletingOrderItem(OrderItem orderItem) {
 
         Product product = orderItem.getProduct();
@@ -461,12 +461,5 @@ public class OrderController {
 
         productRepository.save(product);
     }
-    
-     public OrderItem findOrderItem(Long productId) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(productRepository.findOne(productId));
-        Example<OrderItem> example = Example.of(orderItem);
-        return orderItemRepository.findOne(example);        
-    }
->>>>>>> 3096c1c14c1bc44292b2cd70a9fb8edec83dd03c
+
 }

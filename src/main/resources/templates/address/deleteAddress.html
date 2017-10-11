@@ -16,33 +16,34 @@ and open the template in the editor.
             <h2>Druk dan op delete knop ... </h2>
 
             <form method="POST" th:action="@{/addresses/delete}" th:object="${address}" >
-               
-                    <label>AddressID</label>:
-                    <input type="number" th:field="*{id}" readonly='readonly' /><br/> <br/>        
 
-                    <label>StreetName</label>:                 
-                    <input type="text" th:field="*{streetName}" readonly='readonly' /><br/><br/>
+                <label>AddressID</label>:
+                <input type="number" th:field="*{id}" readonly='readonly' /><br/> <br/>        
 
-                    <label>Number</label>:
-                    <input type="number" th:field="*{number}" readonly='readonly' /><br/><br/>
+                <label>StreetName</label>:                 
+                <input type="text" th:field="*{streetName}" readonly='readonly' /><br/><br/>
 
-                    <label>Addition</label>:                 
-                    <input type="text" th:field="*{addition}" readonly='readonly' /><br/><br/>
+                <label>Number</label>:
+                <input type="number" th:field="*{number}" readonly='readonly' /><br/><br/>
 
-                    <label>PostalCode</label>:                 
-                    <input type="text" th:field="*{postalCode}" readonly='readonly' 
-                           pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}"/><br/><br/>
+                <label>Addition</label>:                 
+                <input type="text" th:field="*{addition}" readonly='readonly' /><br/><br/>
 
-                        <label>City</label>:                 
-                        <input type="text" th:field="*{city}" readonly='readonly' /><br/><br/>    
+                <label>PostalCode</label>:                 
+                <input type="text" th:field="*{postalCode}" readonly='readonly' 
+                       pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}"/><br/><br/>
 
-                        <label>CustomerId</label>:
-                        <input readonly='readonly' type="number" th:field="*{customer.id}"/><br/> <br/>
+                <label>City</label>:                 
+                <input type="text" th:field="*{city}" readonly='readonly' /><br/><br/>    
 
-                        <label>AddressType</label>: 
-                        <input type="text" th:field="*{addressType}" readonly='readonly' /><br/><br/>
-              
+                <label>CustomerId</label>:
+                <input readonly='readonly' type="number" th:field="*{customer.id}"/><br/> <br/>
+
+                <label>AddressType</label>: 
+                <input type="text" th:field="*{addressType}" readonly='readonly' /><br/><br/>
+
                 <input  type="submit" value="delete" />  
+                <a class="button center" th:href="@{/addresses}">Naar Addressoverzicht</a>
 
             </form>
         </div>

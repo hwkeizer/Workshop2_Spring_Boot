@@ -10,7 +10,7 @@ and open the template in the editor.
         <title>Adding new address</title>
         <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
     </head>
-    <body>
+    <body style = "background: url(../images/vlaggen.jpg); background-size: 100%;">
         <div id="content">
             <h1>Voeg u alstublieft het nieuwe address informatie toe</h1>
             <form method="POST" th:action="@{/addresses/add}" th:object="${address}"  >
@@ -34,9 +34,15 @@ and open the template in the editor.
                        /><br/><br/>
 
                 <label >CustomerId</label>:
-                <input type="number"  required="required" 
+               <!-- <input type="number"  required="required" 
                        th:field="*{customer.id}"
-                       />
+                       />-->
+               <select th:field="*{customer.id}" required="required">
+                    <option th:each="dropDownItem : ${customerIdList}"
+                            th:value="${dropDownItem}"
+                            th:text="${dropDownItem}" />
+
+                </select>
 
 
                 <label>AddressType</label>
@@ -48,6 +54,7 @@ and open the template in the editor.
                 </select> <br/><br/>
 
                 <input type="submit" value="Toevoegen" />
+                 <a class="button center" th:href="@{/addresses}">Naar Addressoverzicht</a>
 
 
             </form>

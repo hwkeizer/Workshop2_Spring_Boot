@@ -55,7 +55,9 @@ public class AddressController {
     @GetMapping(path = "/add")
     public String addAddress(Model model) {
         List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
+        List allCustomerId = getAllCustomerId();
         model.addAttribute(new Address());
+        model.addAttribute("customerIdList", allCustomerId);
         model.addAttribute("addressTypeList", addressTypeList);
         return "address/addNewAddress";
     }
@@ -64,6 +66,8 @@ public class AddressController {
     public String addNewAddress(@Valid Address address, Errors errors, RedirectAttributes model) {
         if (errors.hasErrors()) {
             List<AddressType> addressTypeList = new ArrayList<>(Arrays.asList(AddressType.values()));
+            List allCustomerId = getAllCustomerId();
+            model.addAttribute("customerIdList", allCustomerId);
             model.addAttribute("addressTypeList", addressTypeList);
             return "address/addNewAddress";
         }
@@ -104,6 +108,14 @@ public class AddressController {
         }
         addressRepository.save(address);
         return ("redirect:/addresses");
+    }
+    
+    public List getAllCustomerId(){
+        List<Customer> customers = customerRepository.findAll();
+        List allId = new ArrayList <>();
+        for (Customer customer : customers)
+        allId.add(customer.getId());
+        return allId;
     }
 
 }

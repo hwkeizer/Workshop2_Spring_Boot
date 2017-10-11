@@ -10,7 +10,7 @@ and open the template in the editor.
         <title>Adding new product</title>
         <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
     </head>
-    <body>
+    <body style = "background: url(../images/vlaggen.jpg); background-size: 100%;">
         <div id="content">
             <h1>Voeg u alstublieft de nieuwe product informatie toe</h1>
             <form method="POST" th:action="@{/products/add}" th:object="${product}"  >
