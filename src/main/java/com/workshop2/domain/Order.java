@@ -131,9 +131,9 @@ public class Order {
         int hash = 7;
         hash = 53 * hash + Objects.hashCode(this.id);
         hash = 53 * hash + Objects.hashCode(this.totalPrice);
-        hash = 53 * hash + Objects.hashCode(this.dateTime.getYear());
-        hash = 53 * hash + Objects.hashCode(this.dateTime.getMonthValue());
-        hash = 53 * hash + Objects.hashCode(this.dateTime.getDayOfMonth());
+//        hash = 53 * hash + Objects.hashCode(this.dateTime.getYear());
+//        hash = 53 * hash + Objects.hashCode(this.dateTime.getMonthValue());
+//        hash = 53 * hash + Objects.hashCode(this.dateTime.getDayOfMonth());
         hash = 53 * hash + Objects.hashCode(this.orderStatus);
         return hash;
     }

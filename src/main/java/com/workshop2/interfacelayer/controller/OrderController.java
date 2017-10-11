@@ -45,18 +45,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping(path="/orders")
 public class OrderController {
     
-    @Scope(value = "session",proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public class ScopedOrder extends Order {
-        Long localId;
-        private void setLocalId(Long id){
-            this.localId = id;
-        }
-        
-        private Long getLocalId() {
-            return localId;
-        }
-    }
     
+    @Autowired
     private ScopedOrder order;
     
     @Autowired
@@ -80,7 +70,8 @@ public class OrderController {
     
     @GetMapping(path="/startaddneworder")
     public String startAddNewOrder(Model model) {
-        order = new ScopedOrder();
+        // making sure the orderItemList is empty, in case of placing a second order
+        order.getOrderItemList().clear();
         List<Customer> customerList = customerRepository.findAll();
         
         model.addAttribute("customerList", customerList);
@@ -132,7 +123,6 @@ public class OrderController {
             orderItemRepository.save(orderItem);
         }
         orderRepository.save(orderToSave);
-        
         return "redirect:/orders";
     }
     
