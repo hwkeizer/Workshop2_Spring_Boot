@@ -471,8 +471,7 @@ public class OrderController {
 
         productRepository.save(product);
     }
-<<<<<<< HEAD
-=======
+
     
      public OrderItem findOrderItem(Long productId) {
         OrderItem orderItem = new OrderItem();
@@ -480,6 +479,6 @@ public class OrderController {
         Example<OrderItem> example = Example.of(orderItem);
         return orderItemRepository.findOne(example);        
     }
->>>>>>> 7e4417846910f0892eb1fe753a37aeab1b8c1ab6
+
 
 }
