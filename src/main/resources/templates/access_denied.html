@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Applikaasie</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+  
+    <div id="content">
+        
+    <div class="row">
+        <div class="col-md-12">
+            <img class="homepage-img" src="../static/images/muis.jpg" th:src="@{/images/muis.jpg}"/>
+        </div>
+    </div>
+        <br/>
+        <h3 class="center">Sorry, u bent niet geautoriseerd voor deze pagina</h3>      
+        <br/>
+        <a class="button center" th:href="@{/home}">Homepage</a>
+    </div>
+  </body>
+</html>

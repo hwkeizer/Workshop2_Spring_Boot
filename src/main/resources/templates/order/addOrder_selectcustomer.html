@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Adding new product</title>
+        <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 class="center">Selecteren van een klant</h1>
+            <h2 class="center">Klanten</h2>
+            
+            <table id="productList" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Achternaam</th>
+                        <th>Voornaam</th>
+                        <th>Accountnaam</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="customer:${customerList}">
+                        <td th:text="${customer.lastName}"></td>
+                        <td th:text="${customer.firstName + ' ' + customer.lastNamePrefix}"></td>
+                        <td th:text="${customer.account != null} ? ${customer.account.username} : 'Geen account'"></td>
+                        <td class="small">
+                        <a th:href="@{'/orders/addorder_setcustomer/' + ${customer.id}}"><img src="../images/select-icon.png" alt="select"/></a>
+                    </td>
+                    </tr>
+                </tbody>            
+            </table>
+            <br/><br/>
+            
+            <div id="content">  
+            <br/>
+            <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
+            </div>
+            
+        </div>
+    </body>
+</html>

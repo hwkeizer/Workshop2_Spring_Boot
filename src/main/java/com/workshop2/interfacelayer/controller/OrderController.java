@@ -45,18 +45,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping(path="/orders")
 public class OrderController {
     
-    @Scope(value = "session",proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public class ScopedOrder extends Order {
-        Long localId;
-        private void setLocalId(Long id){
-            this.localId = id;
-        }
-        
-        private Long getLocalId() {
-            return localId;
-        }
-    }
     
+    @Autowired
     private ScopedOrder order;
     
     @Autowired
@@ -80,8 +70,24 @@ public class OrderController {
     
     @GetMapping(path="/startaddneworder")
     public String startAddNewOrder(Model model) {
-        order = new ScopedOrder();
-       
+        // making sure the orderItemList is empty, in case of placing a second order
+        order.getOrderItemList().clear();
+        List<Customer> customerList = customerRepository.findAll();
+        
+        model.addAttribute("customerList", customerList);
+        model.addAttribute("order", order);
+        return "order/addOrder_selectcustomer";
+    }
+    
+    @GetMapping(path="addorder_setcustomer/{id}")
+    public String addOrderSetCustomer(@PathVariable Long id, Model model) {
+        order.setCustomer(customerRepository.findOne(id));
+        model.addAttribute("order", order);
+        return "order/addOrder_start";
+    }
+    
+    @GetMapping(path="addorder_noOrderItemSelected")
+    public String returnToSelectOrderItem(Model model) {
         model.addAttribute("order", order);
         return "order/addOrder_start";
     }
@@ -117,7 +123,6 @@ public class OrderController {
             orderItemRepository.save(orderItem);
         }
         orderRepository.save(orderToSave);
-        
         return "redirect:/orders";
     }
     
@@ -152,7 +157,7 @@ public class OrderController {
                 return ("redirect:/orders/addorder");
             else
             // entered amount = 0 on first product, so returning to startAddNewOrder    
-                return("redirect:/orders/startaddneworder");
+                return("redirect:/orders/addorder_noOrderItemSelected");
         }
         
         // get the product
@@ -166,12 +171,7 @@ public class OrderController {
         
         // add the orderItem to the Order
         order.addToOrderItemList(orderItem);
-        
-        //fake customer for testing
-        List<Customer> customerList = customerRepository.findAll();
-        Customer customer = customerList.get(2);
-        order.setCustomer(customer);
-        
+             
         // set totalPrice
         order.setTotalPrice(calculateOrderPrice(order.getOrderItemList()));
 
@@ -392,7 +392,17 @@ public class OrderController {
             if(productList.contains(product))
                 productList.remove(product);
         }
-    }
+        
+        int i = 0;
+        do {
+            Product product = productList.get(i);
+            if(product.getStock() == 0) {
+                productList.remove(i);
+                i--;
+            }
+            i++;
+        } while(i < productList.size());
+ }
  
     protected void updateProductStockAfterCreatingOrder(List<OrderItem> orderItemList) {
         
@@ -461,5 +471,15 @@ public class OrderController {
 
         productRepository.save(product);
     }
+<<<<<<< HEAD
+=======
+    
+     public OrderItem findOrderItem(Long productId) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProduct(productRepository.findOne(productId));
+        Example<OrderItem> example = Example.of(orderItem);
+        return orderItemRepository.findOne(example);        
+    }
+>>>>>>> 7e4417846910f0892eb1fe753a37aeab1b8c1ab6
 
 }

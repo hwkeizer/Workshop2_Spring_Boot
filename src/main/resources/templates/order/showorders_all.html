@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 <tr th:each="order:${orderList}">
-                    <td th:text="${order.customer != null} ? ${order.customer.firstName + ' ' + order.customer.lastName} : 'Klant is verwijderd'"></td>
+                    <td th:text="${order.customer != null} ? ${order.customer.firstName + ' ' + order.customer.lastNamePrefix + ' ' + order.customer.lastName} : 'Klant is verwijderd'"></td>
                     <td th:text="${order.totalPrice}"></td>
                     <td th:text="${#temporals.format(order.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${order.orderStatus}"></td>
@@ -43,6 +43,7 @@
         <div id="content">  
             <br/>        
             <a class="button center" th:href="@{/orders}">Terug naar menu bestellingen</a>
+            <a class="button center" th:href="@{/home}">Home</a>
         </div>
     </body>
 </html>

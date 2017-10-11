@@ -24,6 +24,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http    .exceptionHandling()
+                .accessDeniedPage("/access_denied");
         http
                 .formLogin()
                 .loginPage("/login").permitAll()
@@ -34,6 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/static/**").permitAll()
                 .and()
+                .authorizeRequests().antMatchers("/accounts/**").hasRole("ADMIN")
+                .and()
                 .authorizeRequests().anyRequest().authenticated();
 
     }
@@ -42,7 +46,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider);
         // Tijdelijk extra account om in te loggen als database nog niet gevuld is
-        auth.inMemoryAuthentication().withUser("user").password("welkom").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("admin").password("welkom").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("medewerker").password("welkom").roles("MEDEWERKER");
+        auth.inMemoryAuthentication().withUser("klant").password("welkom").roles("KLANT");
     }
 
 }
