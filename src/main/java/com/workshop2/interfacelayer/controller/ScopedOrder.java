@@ -17,13 +17,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "session",proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ScopedOrder extends Order {
-        
+
     Long localId;
-        public void setLocalId(Long id){
-            this.localId = id;
-        }
-        
-        public Long getLocalId() {
-            return localId;
-        }
+    
+    public void setLocalId(Long id){
+        this.localId = id;
     }
+
+    public Long getLocalId() {
+        return localId;
+    }
+}

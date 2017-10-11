@@ -392,7 +392,17 @@ public class OrderController {
             if(productList.contains(product))
                 productList.remove(product);
         }
-    }
+        
+        int i = 0;
+        do {
+            Product product = productList.get(i);
+            if(product.getStock() == 0) {
+                productList.remove(i);
+                i--;
+            }
+            i++;
+        } while(i < productList.size());
+ }
  
     protected void updateProductStockAfterCreatingOrder(List<OrderItem> orderItemList) {
         
